@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.env
+
+# Notebooks
+.ipynb_checkpoints/
+
+# Data
+data/
+!data/README.md
+
+# MLflow
+mlruns/
+
+# OS
+.DS_Store
