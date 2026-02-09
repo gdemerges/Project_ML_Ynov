@@ -1,13 +1,19 @@
-FROM python:3.10-slim
+FROM python:3.11-slim
 
 WORKDIR /app
 
-COPY app.py .
+# Install dependencies
 COPY requirements.txt .
+RUN pip3 install --no-cache-dir --upgrade pip && \
+    pip3 install --no-cache-dir -r requirements.txt
 
-RUN pip3 install --upgrade pip
-RUN pip3 install -r requirements.txt
+# Copy application code
+COPY app.py .
+
+# Run as non-root user
+RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
+USER appuser
 
 EXPOSE 8081
 
-CMD streamlit run app.py --server.port 8081 --server.address 0.0.0.0
+CMD ["streamlit", "run", "app.py", "--server.port", "8081", "--server.address", "0.0.0.0"]

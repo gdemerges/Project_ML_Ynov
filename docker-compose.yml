@@ -1,0 +1,56 @@
+networks:
+  prod_net:
+    driver: bridge
+
+services:
+  # ---- API de serving (FastAPI) ----
+  serving-api:
+    container_name: serving-api
+    build:
+      context: ./serving
+      dockerfile: Dockerfile
+    volumes:
+      - ./data:/data
+      - ./artifacts:/artifacts
+    ports:
+      - "8080:8080"
+    networks:
+      - prod_net
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+  # ---- Interface web (Streamlit) ----
+  webapp:
+    container_name: webapp
+    build:
+      context: ./webapp
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    networks:
+      - prod_net
+    depends_on:
+      serving-api:
+        condition: service_healthy
+
+  # ---- Reporting (Evidently) ----
+  reporting:
+    container_name: reporting
+    build:
+      context: ./reporting
+      dockerfile: Dockerfile
+    volumes:
+      - ./data:/data
+      - ./reports:/reports
+    environment:
+      - DATA_DIR=/data
+      - REPORT_DIR=/reports
+    networks:
+      - prod_net
+    depends_on:
+      serving-api:
+        condition: service_healthy
