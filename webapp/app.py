@@ -5,7 +5,7 @@ import requests
 # Config
 # ---------------------------------------------------------------------------
 st.set_page_config(
-    page_title="MindPulse - Student Depression Risk",
+    page_title="MindPulse - Risque de Dépression Étudiante",
     page_icon="🧠",
     layout="centered",
     initial_sidebar_state="collapsed",
@@ -223,7 +223,7 @@ st.markdown("""
 <div class="hero">
     <div class="hero-icon">🧠</div>
     <div class="hero-title">MindPulse</div>
-    <div class="hero-subtitle">Student Mental Health Risk Assessment</div>
+    <div class="hero-subtitle">Évaluation du risque de dépression chez les étudiants</div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -232,119 +232,196 @@ st.markdown("""
 # ---------------------------------------------------------------------------
 if "step" not in st.session_state:
     st.session_state.step = "form"  # form | result
+if "form_step" not in st.session_state:
+    st.session_state.form_step = 0 # New: current step in multi-step form
 if "prediction" not in st.session_state:
     st.session_state.prediction = None
 if "form_data" not in st.session_state:
     st.session_state.form_data = {}
 
+# Define form steps and their fields
+FORM_STEPS = [
+    {"title": "Informations Démographiques", "fields": ["gender", "age", "department"]},
+    {"title": "Profil Académique", "fields": ["cgpa", "study"]},
+    {"title": "Habitudes de Vie", "fields": ["sleep", "social", "physical", "stress"]},
+]
+
+
 # ---------------------------------------------------------------------------
 # STEP 1: Form
 # ---------------------------------------------------------------------------
 if st.session_state.step == "form":
+    current_step_index = st.session_state.form_step
+    total_steps = len(FORM_STEPS)
+
+    # Progress bar or step indicator
+    st.progress((current_step_index + 1) / (total_steps + 1)) # +1 for review step
+
+    # Navigation functions
+    def next_step():
+        st.session_state.form_step += 1
+        st.rerun()
+
+    def prev_step():
+        st.session_state.form_step -= 1
+        st.rerun()
+
     st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-    st.markdown('<div class="section-title">📋 Student Profile</div>', unsafe_allow_html=True)
 
-    with st.form("student_form"):
-        col1, col2 = st.columns(2)
+    if current_step_index < total_steps:
+        # Render current step
+        current_step = FORM_STEPS[current_step_index]
+        st.markdown(f'<div class="section-title">Step {current_step_index + 1}/{total_steps+1}: {current_step["title"]}</div>', unsafe_allow_html=True)
 
-        with col1:
-            st.markdown("**👤 Demographics**")
-            gender = st.selectbox("Gender", ["Male", "Female"], key="gender")
-            age = st.number_input("Age", min_value=16, max_value=60, value=22, key="age")
-            department = st.selectbox(
-                "Department",
-                ["Science", "Engineering", "Medical", "Arts", "Business"],
-                key="department"
-            )
-
-        with col2:
-            st.markdown("**📚 Academic**")
-            cgpa = st.number_input("CGPA", min_value=0.0, max_value=4.0, value=3.0, step=0.1, key="cgpa")
-            study_hours = st.number_input(
-                "Study Hours (per day)",
-                min_value=0.0, max_value=16.0, value=4.0, step=0.5, key="study"
-            )
-
-        st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
-
-        st.markdown("**🏃 Lifestyle Factors**")
-        col3, col4 = st.columns(2)
-
-        with col3:
-            sleep_duration = st.slider(
-                "Sleep Duration (hours/day)",
-                0.0, 12.0, 7.0, 0.5, key="sleep"
-            )
-            social_media_hours = st.slider(
-                "Social Media (hours/day)",
-                0.0, 16.0, 3.0, 0.5, key="social"
-            )
-
-        with col4:
-            physical_activity = st.slider(
-                "Physical Activity (min/week)",
-                0, 500, 120, 10, key="physical"
-            )
-            stress_level = st.slider(
-                "Stress Level (1-10)",
-                1, 10, 5, 1, key="stress"
-            )
-
-        st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
-
-        submitted = st.form_submit_button("🔮 Get Prediction", use_container_width=True)
-
-        if submitted:
-            # Prepare data
-            form_data = {
-                "Age": age,
-                "Gender": gender,
-                "Department": department,
-                "CGPA": cgpa,
-                "Sleep_Duration": sleep_duration,
-                "Study_Hours": study_hours,
-                "Social_Media_Hours": social_media_hours,
-                "Physical_Activity": physical_activity,
-                "Stress_Level": stress_level,
-            }
-
-            # Call API
-            with st.spinner("🔄 Analyzing your profile..."):
-                try:
-                    response = requests.post(
-                        API_URL,
-                        json={"features": form_data},
-                        timeout=10
+        with st.form(f"step_form_{current_step_index}", clear_on_submit=False):
+            # Input fields for the current step
+            for field_key in current_step["fields"]:
+                if field_key == "gender":
+                    st.session_state.form_data[field_key] = st.selectbox(
+                        "Genre", ["Homme", "Femme"],
+                        index=["Homme", "Femme"].index(st.session_state.form_data.get(field_key, "Homme")),
+                        key=f"{field_key}_{current_step_index}"
                     )
+                elif field_key == "age":
+                    st.session_state.form_data[field_key] = st.number_input(
+                        "Âge", min_value=16, max_value=60,
+                        value=st.session_state.form_data.get(field_key, 22),
+                        key=f"{field_key}_{current_step_index}"
+                    )
+                elif field_key == "department":
+                    departments = ["Science", "Ingénierie", "Médecine", "Arts", "Affaires"]
+                    st.session_state.form_data[field_key] = st.selectbox(
+                        "Département", departments,
+                        index=departments.index(st.session_state.form_data.get(field_key, "Science")),
+                        key=f"{field_key}_{current_step_index}"
+                    )
+                elif field_key == "cgpa":
+                    st.session_state.form_data[field_key] = st.number_input(
+                        "CGPA", min_value=0.0, max_value=4.0,
+                        value=st.session_state.form_data.get(field_key, 3.0),
+                        step=0.1, key=f"{field_key}_{current_step_index}"
+                    )
+                elif field_key == "study":
+                    st.session_state.form_data[field_key] = st.number_input(
+                        "Heures d'étude (par jour)", min_value=0.0, max_value=16.0,
+                        value=st.session_state.form_data.get(field_key, 4.0),
+                        step=0.5, key=f"{field_key}_{current_step_index}"
+                    )
+                elif field_key == "sleep":
+                    st.session_state.form_data[field_key] = st.slider(
+                        "Durée du sommeil (heures/jour)", 0.0, 12.0,
+                        value=st.session_state.form_data.get(field_key, 7.0),
+                        step=0.5, key=f"{field_key}_{current_step_index}"
+                    )
+                elif field_key == "social":
+                    st.session_state.form_data[field_key] = st.slider(
+                        "Temps sur les réseaux sociaux (heures/jour)", 0.0, 16.0,
+                        value=st.session_state.form_data.get(field_key, 3.0),
+                        step=0.5, key=f"{field_key}_{current_step_index}"
+                    )
+                elif field_key == "physical":
+                    st.session_state.form_data[field_key] = st.slider(
+                        "Activité physique (min/semaine)", 0, 500,
+                        value=st.session_state.form_data.get(field_key, 120),
+                        step=10, key=f"{field_key}_{current_step_index}"
+                    )
+                elif field_key == "stress":
+                    st.session_state.form_data[field_key] = st.slider(
+                        "Niveau de stress (1-10)", 1, 10,
+                        value=st.session_state.form_data.get(field_key, 5),
+                        step=1, key=f"{field_key}_{current_step_index}"
+                    )
+            
+            # Navigation buttons
+            col_nav1, col_nav2 = st.columns(2)
+            with col_nav1:
+                if current_step_index > 0:
+                    if st.form_submit_button("⬅️ Précédent", use_container_width=True):
+                        prev_step()
+            with col_nav2:
+                if st.form_submit_button("Suivant ➡️", use_container_width=True):
+                    next_step()
+    else:
+        # Review and Submit Step
+        st.markdown(f'<div class="section-title">Étape {total_steps + 1}/{total_steps + 1}: Révision et Soumission</div>', unsafe_allow_html=True)
+        st.write("Veuillez vérifier les informations saisies :")
 
-                    if response.status_code == 200:
-                        result = response.json()
-                        prediction = result.get("prediction", 0)
+        display_data = {
+            "Âge": st.session_state.form_data.get("age"),
+            "Genre": st.session_state.form_data.get("gender"),
+            "Département": st.session_state.form_data.get("department"),
+            "CGPA": st.session_state.form_data.get("cgpa"),
+            "Heures d'étude (par jour)": st.session_state.form_data.get("study"),
+            "Durée du sommeil (heures/jour)": st.session_state.form_data.get("sleep"),
+            "Temps sur les réseaux sociaux (heures/jour)": st.session_state.form_data.get("social"),
+            "Activité physique (min/semaine)": st.session_state.form_data.get("physical"),
+            "Niveau de stress (1-10)": st.session_state.form_data.get("stress"),
+        }
+        
+        # Display data in a structured, readable format
+        st.subheader("Résumé de votre profil")
+        st.markdown("---")
+        for key, value in display_data.items():
+            st.write(f"**{key}:** {value}")
+        st.markdown("---")
 
-                        # Save to session
-                        st.session_state.prediction = prediction
-                        st.session_state.form_data = form_data
-                        st.session_state.step = "result"
-                        st.rerun()
-                    else:
-                        st.error(f"❌ API Error: {response.status_code} - {response.text}")
 
-                except requests.exceptions.ConnectionError:
-                    st.error("❌ Cannot reach the API. Please ensure the serving container is running.")
-                except Exception as e:
-                    st.error(f"❌ Unexpected error: {e}")
+        col_nav1, col_nav2 = st.columns(2)
+        with col_nav1:
+            if st.button("⬅️ Précédent", key="review_prev", use_container_width=True):
+                prev_step()
+        with col_nav2:
+            if st.button("🔮 Obtenir la Prédiction", key="get_prediction", use_container_width=True):
+                # Prepare data for API call from session_state
+                form_data_for_api = {
+                    "Age": st.session_state.form_data.get("age"),
+                    "Gender": st.session_state.form_data.get("gender"),
+                    "Department": st.session_state.form_data.get("department"),
+                    "CGPA": st.session_state.form_data.get("cgpa"),
+                    "Sleep_Duration": st.session_state.form_data.get("sleep"),
+                    "Study_Hours": st.session_state.form_data.get("study"),
+                    "Social_Media_Hours": st.session_state.form_data.get("social"),
+                    "Physical_Activity": st.session_state.form_data.get("physical"),
+                    "Stress_Level": st.session_state.form_data.get("stress"),
+                }
 
-    st.markdown('</div>', unsafe_allow_html=True)
+                # Call API
+                with st.spinner("🔄 Analyse de votre profil..."):
+                    try:
+                        response = requests.post(
+                            API_URL,
+                            json={"features": form_data_for_api},
+                            timeout=10
+                        )
 
-    # Info box
+                        if response.status_code == 200:
+                            result = response.json()
+                            prediction = result.get("prediction", 0)
+
+                            # Save to session
+                            st.session_state.prediction = prediction
+                            st.session_state.form_data = form_data_for_api # Ensure form_data is updated
+                            st.session_state.step = "result"
+                            st.rerun()
+                        else:
+                            st.error(f"❌ Erreur API: {response.status_code} - {response.text}")
+
+                    except requests.exceptions.ConnectionError:
+                        st.error("❌ Impossible de joindre l'API. Veuillez vous assurer que le conteneur de service est en cours d'exécution.")
+                    except Exception as e:
+                        st.error(f"❌ Erreur inattendue: {e}")
+    st.markdown('</div>', unsafe_allow_html=True) # Closes the glass-card
+
+    # Info box (retained at the bottom of the form section)
     st.markdown("""
     <div class="info-box">
         <p>
-            <strong>ℹ️ Privacy Notice:</strong> This is an educational ML model for demonstration purposes.
-            Not a substitute for professional medical advice. All data is processed locally.
+            <strong>ℹ️ Avis de Confidentialité :</strong> Ceci est un modèle ML éducatif à des fins de démonstration.
+            Ne remplace pas un avis médical professionnel. Toutes les données sont traitées localement.
         </p>
     </div>
     """, unsafe_allow_html=True)
+
 
 # ---------------------------------------------------------------------------
 # STEP 2: Result
@@ -360,10 +437,10 @@ elif st.session_state.step == "result":
         st.markdown(f"""
         <div class="result-card result-positive">
             <div class="result-icon">⚠️</div>
-            <div class="result-title">Risk Detected</div>
+            <div class="result-title">Risque Détecté</div>
             <div class="result-desc">
-                The model indicates a potential risk of depression based on your profile.
-                We recommend reaching out to mental health support services.
+                Le modèle indique un risque potentiel de dépression basé sur votre profil.
+                Nous vous recommandons de contacter des services de soutien en santé mentale.
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -371,49 +448,49 @@ elif st.session_state.step == "result":
         st.markdown(f"""
         <div class="result-card result-negative">
             <div class="result-icon">✅</div>
-            <div class="result-title">No Significant Risk</div>
+            <div class="result-title">Pas de risque significatif</div>
             <div class="result-desc">
-                Based on your profile, the model does not indicate significant depression risk.
-                Continue maintaining your healthy lifestyle habits.
+                Basé sur votre profil, le modèle n'indique pas de risque significatif de dépression.
+                Continuez à maintenir vos saines habitudes de vie.
             </div>
         </div>
         """, unsafe_allow_html=True)
 
     # Recommendations
     st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-    st.markdown('<div class="section-title">💡 Recommendations</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">💡 Recommandations</div>', unsafe_allow_html=True)
 
     col1, col2 = st.columns(2)
 
     with col1:
-        st.markdown("**📞 Support Resources (France)**")
+        st.markdown("**📞 Ressources de Soutien (France)**")
         st.markdown("""
-        - **3114** - National prevention hotline
+        - **3114** - Numéro national de prévention du suicide
         - **SOS Amitié** - 09 72 39 40 50
         - **Fil Santé Jeunes** - 0 800 235 236
-        - **Nightline** - Student listening service
+        - **Nightline** - Service d'écoute étudiant
         """)
 
     with col2:
-        st.markdown("**🎯 Personalized Tips**")
+        st.markdown("**🎯 Conseils Personnalisés**")
         tips = []
 
         if form_data["Stress_Level"] >= 7:
-            tips.append("- Practice stress management (meditation, breathing)")
+            tips.append("- Pratiquer la gestion du stress (méditation, respiration)")
         if form_data["Sleep_Duration"] < 6:
-            tips.append("- Aim for 7-9 hours of sleep per night")
+            tips.append("- Viser 7 à 9 heures de sommeil par nuit")
         if form_data["Physical_Activity"] < 60:
-            tips.append("- Increase physical activity (150+ min/week)")
+            tips.append("- Augmenter l'activité physique (150+ min/semaine)")
         if form_data["Social_Media_Hours"] > 5:
-            tips.append("- Reduce screen time and social media")
+            tips.append("- Réduire le temps d'écran et les réseaux sociaux")
         if form_data["Study_Hours"] > 10:
-            tips.append("- Balance study time with breaks")
+            tips.append("- Équilibrer le temps d'étude avec des pauses")
 
         if not tips:
             tips = [
-                "- Keep up your healthy habits",
-                "- Stay connected with friends & family",
-                "- Maintain work-life balance"
+                "- Maintenir de saines habitudes",
+                "- Rester connecté avec vos amis et votre famille",
+                "- Maintenir l'équilibre vie pro/perso"
             ]
 
         st.markdown("\n".join(tips))
@@ -422,45 +499,45 @@ elif st.session_state.step == "result":
 
     # Feedback section
     st.markdown('<div class="feedback-box">', unsafe_allow_html=True)
-    st.markdown('<div class="feedback-title">📊 Help Improve Our Model</div>', unsafe_allow_html=True)
-    st.markdown("Your feedback helps train the model to become more accurate over time.")
+    st.markdown('<div class="feedback-title">📊 Aidez-nous à Améliorer Notre Modèle</div>', unsafe_allow_html=True)
+    st.markdown("Votre retour aide à améliorer la précision du modèle au fil du temps.")
 
     feedback_col1, feedback_col2 = st.columns([3, 1])
 
     with feedback_col1:
         actual_status = st.selectbox(
-            "Are you actually experiencing depression symptoms?",
-            ["No", "Yes"],
+            "Souffrez-vous réellement de symptômes de dépression ?",
+            ["Non", "Oui"],
             key="feedback_actual"
         )
 
     with feedback_col2:
         st.write("")  # Spacing
         st.write("")
-        if st.button("Submit Feedback", use_container_width=True):
+        if st.button("Envoyer le Retour", use_container_width=True):
             feedback_payload = {
                 "features": form_data,
                 "prediction": int(prediction),
-                "actual": 1 if actual_status == "Yes" else 0,
+                "actual": 1 if actual_status == "Oui" else 0,
             }
 
             try:
                 fb_response = requests.post(FEEDBACK_URL, json=feedback_payload, timeout=10)
                 if fb_response.status_code == 200:
                     result = fb_response.json()
-                    st.success(f"✅ Thank you! Feedback saved (total: {result.get('total_feedbacks', 0)})")
+                    st.success(f"✅ Merci ! Retour enregistré (total: {result.get('total_feedbacks', 0)})")
                     if result.get("retrain_triggered"):
-                        st.info("🔄 Model retraining triggered!")
+                        st.info("🔄 Ré-entraînement du modèle déclenché !")
                 else:
-                    st.error(f"❌ Error: {fb_response.status_code}")
+                    st.error(f"❌ Erreur: {fb_response.status_code}")
             except Exception as e:
-                st.error(f"❌ Connection error: {e}")
+                st.error(f"❌ Erreur de connexion: {e}")
 
     st.markdown('</div>', unsafe_allow_html=True)
 
     # New assessment button
     st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
-    if st.button("🔄 New Assessment", use_container_width=True):
+    if st.button("🔄 Nouvelle Évaluation", use_container_width=True):
         st.session_state.step = "form"
         st.session_state.prediction = None
         st.session_state.form_data = {}
@@ -471,7 +548,7 @@ elif st.session_state.step == "result":
 # ---------------------------------------------------------------------------
 st.markdown("""
 <div class="footer">
-    <strong>MindPulse</strong> &mdash; Educational ML Project<br>
+    <strong>MindPulse</strong> &mdash; Projet ML Éducatif<br>
     M1 DataEng &middot; Ynov Campus &middot; 2025-2026
 </div>
 """, unsafe_allow_html=True)

@@ -3959,3 +3959,317 @@ File Path                                          PID    Runtime      # DAGs   
 /opt/airflow/dags/evidently_reporting_pipeline.py                           1           0  0.42s           2026-02-09T18:44:39
 /opt/airflow/dags/ml_retrain_pipeline.py                                    0           1  0.42s           2026-02-09T18:44:39
 ================================================================================
+[2026-02-09T18:45:12.396+0000] {manager.py:878} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                          PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-------------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
+/opt/airflow/dags/ml_retrain_pipeline.py                                    0           1  0.43s           2026-02-09T18:45:10
+/opt/airflow/dags/evidently_reporting_pipeline.py                           1           0  0.43s           2026-02-09T18:45:10
+================================================================================
+[2026-02-09T18:45:43.083+0000] {manager.py:878} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                          PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-------------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
+/opt/airflow/dags/evidently_reporting_pipeline.py                           1           0  0.39s           2026-02-09T18:45:41
+/opt/airflow/dags/ml_retrain_pipeline.py                                    0           1  0.39s           2026-02-09T18:45:41
+================================================================================
+[2026-02-09T18:45:59.256+0000] {manager.py:737} INFO - Searching for files in /opt/airflow/dags
+[2026-02-09T18:45:59.264+0000] {manager.py:740} INFO - There are 2 files in /opt/airflow/dags
+[2026-02-09T18:46:13.780+0000] {manager.py:878} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                          PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-------------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
+/opt/airflow/dags/evidently_reporting_pipeline.py                           1           0  0.36s           2026-02-09T18:46:11
+/opt/airflow/dags/ml_retrain_pipeline.py                                    0           1  0.36s           2026-02-09T18:46:11
+================================================================================
+[2026-02-09T18:46:44.565+0000] {manager.py:878} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                          PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-------------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
+/opt/airflow/dags/ml_retrain_pipeline.py                                    0           1  0.49s           2026-02-09T18:46:42
+/opt/airflow/dags/evidently_reporting_pipeline.py                           1           0  0.48s           2026-02-09T18:46:42
+================================================================================
+[2026-02-09T18:47:15.164+0000] {manager.py:878} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                          PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-------------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
+/opt/airflow/dags/evidently_reporting_pipeline.py                           1           0  0.33s           2026-02-09T18:47:13
+/opt/airflow/dags/ml_retrain_pipeline.py                                    0           1  0.32s           2026-02-09T18:47:13
+================================================================================
+[2026-02-09T18:47:45.851+0000] {manager.py:878} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                          PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-------------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
+/opt/airflow/dags/ml_retrain_pipeline.py                                    0           1  0.43s           2026-02-09T18:47:43
+/opt/airflow/dags/evidently_reporting_pipeline.py                           1           0  0.40s           2026-02-09T18:47:43
+================================================================================
+[2026-02-09T18:48:16.528+0000] {manager.py:878} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                          PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-------------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
+/opt/airflow/dags/evidently_reporting_pipeline.py                           1           0  0.24s           2026-02-09T18:48:14
+/opt/airflow/dags/ml_retrain_pipeline.py                                    0           1  0.23s           2026-02-09T18:48:14
+================================================================================
+[2026-02-09T18:48:47.001+0000] {manager.py:878} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                          PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-------------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
+/opt/airflow/dags/evidently_reporting_pipeline.py                           1           0  0.24s           2026-02-09T18:48:45
+/opt/airflow/dags/ml_retrain_pipeline.py                                    0           1  0.24s           2026-02-09T18:48:44
+================================================================================
+[2026-02-09T18:49:17.534+0000] {manager.py:878} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                          PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-------------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
+/opt/airflow/dags/evidently_reporting_pipeline.py                           1           0  0.28s           2026-02-09T18:49:15
+/opt/airflow/dags/ml_retrain_pipeline.py                                    0           1  0.28s           2026-02-09T18:49:15
+================================================================================
+[2026-02-09T18:49:48.117+0000] {manager.py:878} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                          PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-------------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
+/opt/airflow/dags/evidently_reporting_pipeline.py                           1           0  0.26s           2026-02-09T18:49:46
+/opt/airflow/dags/ml_retrain_pipeline.py                                    0           1  0.25s           2026-02-09T18:49:46
+================================================================================
+[2026-02-09T18:50:18.595+0000] {manager.py:878} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                          PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-------------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
+/opt/airflow/dags/evidently_reporting_pipeline.py                           1           0  0.23s           2026-02-09T18:50:16
+/opt/airflow/dags/ml_retrain_pipeline.py                                    0           1  0.22s           2026-02-09T18:50:16
+================================================================================
+[2026-02-09T18:50:49.045+0000] {manager.py:878} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                          PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-------------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
+/opt/airflow/dags/evidently_reporting_pipeline.py                           1           0  0.25s           2026-02-09T18:50:47
+/opt/airflow/dags/ml_retrain_pipeline.py                                    0           1  0.24s           2026-02-09T18:50:47
+================================================================================
+[2026-02-09T18:51:00.206+0000] {manager.py:737} INFO - Searching for files in /opt/airflow/dags
+[2026-02-09T18:51:00.213+0000] {manager.py:740} INFO - There are 2 files in /opt/airflow/dags
+[2026-02-09T18:51:19.842+0000] {manager.py:878} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                          PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-------------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
+/opt/airflow/dags/ml_retrain_pipeline.py                                    0           1  0.44s           2026-02-09T18:51:17
+/opt/airflow/dags/evidently_reporting_pipeline.py                           1           0  0.44s           2026-02-09T18:51:17
+================================================================================
+[2026-02-09T18:51:50.464+0000] {manager.py:878} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                          PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-------------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
+/opt/airflow/dags/ml_retrain_pipeline.py                                    0           1  0.28s           2026-02-09T18:51:48
+/opt/airflow/dags/evidently_reporting_pipeline.py                           1           0  0.25s           2026-02-09T18:51:48
+================================================================================
+[2026-02-09T18:52:20.937+0000] {manager.py:878} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                          PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-------------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
+/opt/airflow/dags/evidently_reporting_pipeline.py                           1           0  0.27s           2026-02-09T18:52:18
+/opt/airflow/dags/ml_retrain_pipeline.py                                    0           1  0.26s           2026-02-09T18:52:18
+================================================================================
+[2026-02-09T18:52:51.444+0000] {manager.py:878} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                          PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-------------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
+/opt/airflow/dags/evidently_reporting_pipeline.py                           1           0  0.28s           2026-02-09T18:52:49
+/opt/airflow/dags/ml_retrain_pipeline.py                                    0           1  0.28s           2026-02-09T18:52:49
+================================================================================
+[2026-02-09T18:53:21.977+0000] {manager.py:878} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                          PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-------------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
+/opt/airflow/dags/evidently_reporting_pipeline.py                           1           0  0.26s           2026-02-09T18:53:19
+/opt/airflow/dags/ml_retrain_pipeline.py                                    0           1  0.25s           2026-02-09T18:53:19
+================================================================================
+[2026-02-09T18:53:52.462+0000] {manager.py:878} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                          PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-------------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
+/opt/airflow/dags/evidently_reporting_pipeline.py                           1           0  0.26s           2026-02-09T18:53:50
+/opt/airflow/dags/ml_retrain_pipeline.py                                    0           1  0.24s           2026-02-09T18:53:50
+================================================================================
+[2026-02-09T18:54:23.032+0000] {manager.py:878} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                          PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-------------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
+/opt/airflow/dags/evidently_reporting_pipeline.py                           1           0  0.29s           2026-02-09T18:54:21
+/opt/airflow/dags/ml_retrain_pipeline.py                                    0           1  0.27s           2026-02-09T18:54:20
+================================================================================
+[2026-02-09T18:54:53.669+0000] {manager.py:878} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                          PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-------------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
+/opt/airflow/dags/evidently_reporting_pipeline.py                           1           0  0.33s           2026-02-09T18:54:51
+/opt/airflow/dags/ml_retrain_pipeline.py                                    0           1  0.32s           2026-02-09T18:54:51
+================================================================================
+[2026-02-09T18:55:24.308+0000] {manager.py:878} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                          PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-------------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
+/opt/airflow/dags/evidently_reporting_pipeline.py                           1           0  0.32s           2026-02-09T18:55:22
+/opt/airflow/dags/ml_retrain_pipeline.py                                    0           1  0.30s           2026-02-09T18:55:22
+================================================================================
+[2026-02-09T18:55:54.860+0000] {manager.py:878} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                          PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-------------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
+/opt/airflow/dags/ml_retrain_pipeline.py                                    0           1  0.27s           2026-02-09T18:55:52
+/opt/airflow/dags/evidently_reporting_pipeline.py                           1           0  0.26s           2026-02-09T18:55:52
+================================================================================
+[2026-02-09T18:56:00.904+0000] {manager.py:737} INFO - Searching for files in /opt/airflow/dags
+[2026-02-09T18:56:00.909+0000] {manager.py:740} INFO - There are 2 files in /opt/airflow/dags
+[2026-02-09T18:56:25.514+0000] {manager.py:878} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                          PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-------------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
+/opt/airflow/dags/evidently_reporting_pipeline.py                           1           0  0.30s           2026-02-09T18:56:23
+/opt/airflow/dags/ml_retrain_pipeline.py                                    0           1  0.30s           2026-02-09T18:56:23
+================================================================================
+[2026-02-09T18:56:56.167+0000] {manager.py:878} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                          PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-------------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
+/opt/airflow/dags/ml_retrain_pipeline.py                                    0           1  0.38s           2026-02-09T18:56:54
+/opt/airflow/dags/evidently_reporting_pipeline.py                           1           0  0.30s           2026-02-09T18:56:54
+================================================================================
+[2026-02-09T18:57:26.690+0000] {manager.py:878} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                          PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-------------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
+/opt/airflow/dags/evidently_reporting_pipeline.py                           1           0  0.25s           2026-02-09T18:57:24
+/opt/airflow/dags/ml_retrain_pipeline.py                                    0           1  0.25s           2026-02-09T18:57:24
+================================================================================
+[2026-02-09T18:57:57.197+0000] {manager.py:878} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                          PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-------------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
+/opt/airflow/dags/evidently_reporting_pipeline.py                           1           0  0.23s           2026-02-09T18:57:55
+/opt/airflow/dags/ml_retrain_pipeline.py                                    0           1  0.23s           2026-02-09T18:57:55
+================================================================================
+[2026-02-09T18:58:27.707+0000] {manager.py:878} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                          PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-------------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
+/opt/airflow/dags/evidently_reporting_pipeline.py                           1           0  0.26s           2026-02-09T18:58:25
+/opt/airflow/dags/ml_retrain_pipeline.py                                    0           1  0.26s           2026-02-09T18:58:25
+================================================================================
+[2026-02-09T18:58:58.271+0000] {manager.py:878} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                          PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-------------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
+/opt/airflow/dags/evidently_reporting_pipeline.py                           1           0  0.28s           2026-02-09T18:58:56
+/opt/airflow/dags/ml_retrain_pipeline.py                                    0           1  0.27s           2026-02-09T18:58:56
+================================================================================
+[2026-02-09T18:59:28.799+0000] {manager.py:878} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                          PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-------------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
+/opt/airflow/dags/evidently_reporting_pipeline.py                           1           0  0.25s           2026-02-09T18:59:26
+/opt/airflow/dags/ml_retrain_pipeline.py                                    0           1  0.25s           2026-02-09T18:59:26
+================================================================================
+[2026-02-09T18:59:59.375+0000] {manager.py:878} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                          PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-------------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
+/opt/airflow/dags/evidently_reporting_pipeline.py                           1           0  0.25s           2026-02-09T18:59:57
+/opt/airflow/dags/ml_retrain_pipeline.py                                    0           1  0.25s           2026-02-09T18:59:57
+================================================================================
+[2026-02-09T19:00:29.902+0000] {manager.py:878} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                          PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-------------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
+/opt/airflow/dags/evidently_reporting_pipeline.py                           1           0  0.25s           2026-02-09T19:00:27
+/opt/airflow/dags/ml_retrain_pipeline.py                                    0           1  0.22s           2026-02-09T19:00:27
+================================================================================
+[2026-02-09T19:01:00.498+0000] {manager.py:878} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                          PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-------------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
+/opt/airflow/dags/evidently_reporting_pipeline.py                           1           0  0.45s           2026-02-09T19:00:58
+/opt/airflow/dags/ml_retrain_pipeline.py                                    0           1  0.26s           2026-02-09T19:00:58
+================================================================================
+[2026-02-09T19:01:01.505+0000] {manager.py:737} INFO - Searching for files in /opt/airflow/dags
+[2026-02-09T19:01:01.511+0000] {manager.py:740} INFO - There are 2 files in /opt/airflow/dags
+[2026-02-09T19:01:31.142+0000] {manager.py:878} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                          PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-------------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
+/opt/airflow/dags/evidently_reporting_pipeline.py                           1           0  0.28s           2026-02-09T19:01:29
+/opt/airflow/dags/ml_retrain_pipeline.py                                    0           1  0.26s           2026-02-09T19:01:29
+================================================================================
+[2026-02-09T19:02:01.735+0000] {manager.py:878} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                          PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-------------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------
+/opt/airflow/dags/evidently_reporting_pipeline.py                           1           0  0.31s           2026-02-09T19:01:59
+/opt/airflow/dags/ml_retrain_pipeline.py                                    0           1  0.30s           2026-02-09T19:01:59
+================================================================================
