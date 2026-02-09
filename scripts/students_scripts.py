@@ -24,7 +24,7 @@ os.makedirs("artifacts", exist_ok=True)
 # ==========================================
 #  Load Dataset
 # ==========================================
-DATA_PATH = "data/Student Depression and Lifestyle.csv"
+DATA_PATH = "data/student_lifestyle_100k.csv"
 
 try:
     df = pd.read_csv(DATA_PATH)
@@ -36,7 +36,11 @@ except FileNotFoundError:
 # ==========================================
 #  Preprocessing Configuration
 # ==========================================
-target_col = 'Depression' 
+target_col = 'Depression'
+
+# Drop Student_ID if present (not a feature)
+if 'Student_ID' in df.columns:
+    df = df.drop(columns=['Student_ID'])
 
 # Separate Features (X) and Target (y)
 X = df.drop(columns=[target_col])

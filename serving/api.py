@@ -218,6 +218,21 @@ async def feedback(req: FeedbackRequest):
         raise HTTPException(status_code=400, detail=str(e))
 
 
+@app.post("/retrain")
+async def manual_retrain():
+    """Manually trigger model retraining."""
+    prod_path = os.path.join(DATA_DIR, "prod_data.csv")
+    if not os.path.exists(prod_path):
+        raise HTTPException(status_code=400, detail="No production data available for retraining")
+
+    try:
+        with retrain_lock:
+            retrain_model()
+        return {"status": "ok", "message": "Model retrained successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @app.get("/feature-names")
 async def get_feature_names():
     if preprocessing_pipeline is None:

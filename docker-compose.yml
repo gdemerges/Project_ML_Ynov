@@ -16,6 +16,7 @@ services:
       - "8080:8080"
     networks:
       - prod_net
+    restart: unless-stopped
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/health')"]
       interval: 10s
@@ -33,6 +34,7 @@ services:
       - "8081:8081"
     networks:
       - prod_net
+    restart: unless-stopped
     depends_on:
       serving-api:
         condition: service_healthy

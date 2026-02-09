@@ -23,13 +23,19 @@ st.markdown("""
 
     /* --- Global --- */
     .stApp {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
         font-family: 'Inter', sans-serif;
     }
 
     /* Hide Streamlit branding */
     #MainMenu, footer, header {visibility: hidden;}
-    .block-container {padding: 2rem 1rem;}
+    .block-container {
+        padding: 2rem 1rem;
+        position: relative;
+        z-index: 1;
+    }
+
+
 
     /* --- Header --- */
     .hero {
@@ -60,13 +66,32 @@ st.markdown("""
 
     /* --- Glass Card --- */
     .glass-card {
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(20px);
-        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        border-radius: 28px;
         padding: 2.5rem;
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.3);
         margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .glass-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+        transition: left 0.5s;
+    }
+
+    .glass-card:hover::before {
+        left: 100%;
     }
 
     /* --- Section Titles --- */
@@ -106,20 +131,42 @@ st.markdown("""
     /* --- Buttons --- */
     .stButton > button {
         width: 100%;
-        background: white !important;
+        background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%) !important;
         color: #667eea !important;
         border: none !important;
         border-radius: 16px !important;
         padding: 1rem 2rem !important;
         font-size: 1.1rem !important;
         font-weight: 600 !important;
-        transition: all 0.3s ease !important;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2),
+                    inset 0 1px 0 rgba(255,255,255,0.8) !important;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .stButton > button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(102,126,234,0.2), transparent);
+        transition: left 0.5s;
+    }
+
+    .stButton > button:hover::before {
+        left: 100%;
     }
 
     .stButton > button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 25px rgba(0,0,0,0.3) !important;
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 8px 30px rgba(0,0,0,0.3) !important;
+    }
+
+    .stButton > button:active {
+        transform: translateY(-1px) scale(0.98);
     }
 
     /* --- Result Cards --- */
@@ -213,6 +260,43 @@ st.markdown("""
         border-radius: 12px !important;
         border: 1px solid rgba(255,255,255,0.2) !important;
     }
+
+
+
+
+
+
+    /* --- Clean form styling --- */
+    .stForm {
+        border: none !important;
+        padding: 0 !important;
+        background: transparent !important;
+    }
+
+    /* Remove borders from forms */
+    section[data-testid="stForm"] {
+        border: none !important;
+        background: transparent !important;
+    }
+
+    /* Target ONLY the horizontal divider, not form buttons */
+    .stMarkdown > hr,
+    .element-container > hr {
+        border: none !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        visibility: hidden !important;
+    }
+
+    /* Hide specific empty Streamlit containers that appear after progress bar */
+    [data-testid="column"] > div:empty,
+    .element-container:empty,
+    .row-widget:empty {
+        display: none !important;
+    }
+
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -238,6 +322,8 @@ if "prediction" not in st.session_state:
     st.session_state.prediction = None
 if "form_data" not in st.session_state:
     st.session_state.form_data = {}
+if "api_payload" not in st.session_state:
+    st.session_state.api_payload = {}
 
 # Define form steps and their fields
 FORM_STEPS = [
@@ -245,6 +331,10 @@ FORM_STEPS = [
     {"title": "Profil Académique", "fields": ["cgpa", "study"]},
     {"title": "Habitudes de Vie", "fields": ["sleep", "social", "physical", "stress"]},
 ]
+
+# Mapping FR -> EN for the ML model
+GENDER_MAP = {"Homme": "Male", "Femme": "Female"}
+DEPT_MAP = {"Science": "Science", "Ingénierie": "Engineering", "Médecine": "Medical", "Arts": "Arts", "Affaires": "Business"}
 
 
 # ---------------------------------------------------------------------------
@@ -254,8 +344,7 @@ if st.session_state.step == "form":
     current_step_index = st.session_state.form_step
     total_steps = len(FORM_STEPS)
 
-    # Progress bar or step indicator
-    st.progress((current_step_index + 1) / (total_steps + 1)) # +1 for review step
+    # Progress bar or step indicator is removed.
 
     # Navigation functions
     def next_step():
@@ -266,12 +355,11 @@ if st.session_state.step == "form":
         st.session_state.form_step -= 1
         st.rerun()
 
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-
     if current_step_index < total_steps:
         # Render current step
         current_step = FORM_STEPS[current_step_index]
-        st.markdown(f'<div class="section-title">Step {current_step_index + 1}/{total_steps+1}: {current_step["title"]}</div>', unsafe_allow_html=True)
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        # The section title for each step is removed as per user request.
 
         with st.form(f"step_form_{current_step_index}", clear_on_submit=False):
             # Input fields for the current step
@@ -341,9 +429,13 @@ if st.session_state.step == "form":
             with col_nav2:
                 if st.form_submit_button("Suivant ➡️", use_container_width=True):
                     next_step()
+
+        st.markdown('</div>', unsafe_allow_html=True)
+
     else:
         # Review and Submit Step
-        st.markdown(f'<div class="section-title">Étape {total_steps + 1}/{total_steps + 1}: Révision et Soumission</div>', unsafe_allow_html=True)
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        # The section title for the review step is removed as per user request.
         st.write("Veuillez vérifier les informations saisies :")
 
         display_data = {
@@ -359,11 +451,11 @@ if st.session_state.step == "form":
         }
         
         # Display data in a structured, readable format
-        st.subheader("Résumé de votre profil")
-        st.markdown("---")
+        st.markdown("### 📝 Résumé de votre profil")
+        st.markdown('<div style="margin: 1rem 0;">', unsafe_allow_html=True)
         for key, value in display_data.items():
             st.write(f"**{key}:** {value}")
-        st.markdown("---")
+        st.markdown('</div>', unsafe_allow_html=True)
 
 
         col_nav1, col_nav2 = st.columns(2)
@@ -375,8 +467,8 @@ if st.session_state.step == "form":
                 # Prepare data for API call from session_state
                 form_data_for_api = {
                     "Age": st.session_state.form_data.get("age"),
-                    "Gender": st.session_state.form_data.get("gender"),
-                    "Department": st.session_state.form_data.get("department"),
+                    "Gender": GENDER_MAP.get(st.session_state.form_data.get("gender"), "Male"),
+                    "Department": DEPT_MAP.get(st.session_state.form_data.get("department"), "Science"),
                     "CGPA": st.session_state.form_data.get("cgpa"),
                     "Sleep_Duration": st.session_state.form_data.get("sleep"),
                     "Study_Hours": st.session_state.form_data.get("study"),
@@ -388,9 +480,10 @@ if st.session_state.step == "form":
                 # Call API
                 with st.spinner("🔄 Analyse de votre profil..."):
                     try:
+                        payload = {"features": form_data_for_api}
                         response = requests.post(
                             API_URL,
-                            json={"features": form_data_for_api},
+                            json=payload,
                             timeout=10
                         )
 
@@ -398,19 +491,20 @@ if st.session_state.step == "form":
                             result = response.json()
                             prediction = result.get("prediction", 0)
 
-                            # Save to session
+                            # Save to session (EN keys for API/feedback, used in result page)
                             st.session_state.prediction = prediction
-                            st.session_state.form_data = form_data_for_api # Ensure form_data is updated
+                            st.session_state.api_payload = form_data_for_api
                             st.session_state.step = "result"
                             st.rerun()
                         else:
                             st.error(f"❌ Erreur API: {response.status_code} - {response.text}")
 
-                    except requests.exceptions.ConnectionError:
-                        st.error("❌ Impossible de joindre l'API. Veuillez vous assurer que le conteneur de service est en cours d'exécution.")
+                    except requests.exceptions.ConnectionError as e:
+                        st.error(f"❌ Impossible de joindre l'API. Veuillez vous assurer que le conteneur de service est en cours d'exécution.\n\nDétail: {e}")
                     except Exception as e:
-                        st.error(f"❌ Erreur inattendue: {e}")
-    st.markdown('</div>', unsafe_allow_html=True) # Closes the glass-card
+                        st.error(f"❌ Erreur inattendue ({type(e).__name__}): {e}")
+
+        st.markdown('</div>', unsafe_allow_html=True)
 
     # Info box (retained at the bottom of the form section)
     st.markdown("""
@@ -428,7 +522,8 @@ if st.session_state.step == "form":
 # ---------------------------------------------------------------------------
 elif st.session_state.step == "result":
     prediction = st.session_state.prediction
-    form_data = st.session_state.form_data
+    api_data = st.session_state.get("api_payload", st.session_state.form_data)
+    form_data = api_data  # EN keys used for recommendations and feedback
 
     is_at_risk = prediction == 1
 
@@ -536,11 +631,12 @@ elif st.session_state.step == "result":
     st.markdown('</div>', unsafe_allow_html=True)
 
     # New assessment button
-    st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
+    st.markdown('<div style="margin-top: 2rem;"></div>', unsafe_allow_html=True)
     if st.button("🔄 Nouvelle Évaluation", use_container_width=True):
         st.session_state.step = "form"
         st.session_state.prediction = None
         st.session_state.form_data = {}
+        st.session_state.api_payload = {}
         st.rerun()
 
 # ---------------------------------------------------------------------------
