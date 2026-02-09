@@ -10,6 +10,7 @@ Ce projet implémente une solution complète de ML en production avec :
 - 📊 **Système de reporting (Evidently)** - Suivi des performances
 - 🐳 **Conteneurisation (Docker)** - Déploiement simplifié
 - 🔄 **Réentraînement automatique** - Amélioration continue
+- ⚙️ **Orchestration (Airflow)** - Pipeline MLOps automatisé
 
 ## 📊 Dataset
 
@@ -45,6 +46,14 @@ Project_ML_Ynov/
 │   ├── Dockerfile
 │   ├── docker-compose.yml
 │   └── requirements.txt
+├── airflow/                       # Orchestration MLOps ✅
+│   ├── dags/
+│   │   ├── ml_retrain_pipeline.py
+│   │   └── evidently_reporting_pipeline.py
+│   ├── docker-compose.yml
+│   ├── requirements.txt
+│   └── README.md
+├── reports/                       # Rapports Evidently générés
 ├── WEBAPP_GUIDE.md               # Guide détaillé de l'application web
 └── README.md                     # Ce fichier
 ```
@@ -80,6 +89,16 @@ docker compose -f reporting/docker-compose.yml up
 
 Le dashboard sera accessible sur : **http://localhost:8082**
 
+### 4. (Optionnel) Démarrer l'orchestration Airflow
+
+```bash
+cd airflow
+docker compose up -d
+```
+
+L'interface Airflow sera accessible sur : **http://localhost:8083**
+**Identifiants :** admin / admin
+
 ## 💻 Utilisation de l'application web
 
 1. **Ouvrez votre navigateur** à `http://localhost:8081`
@@ -112,9 +131,11 @@ Le dashboard sera accessible sur : **http://localhost:8082**
 - **Streamlit** - Interface utilisateur interactive
 - **Requests** - Communication HTTP
 
-### Infrastructure
+### Infrastructure & MLOps
 - **Docker** - Conteneurisation
 - **Docker Compose** - Orchestration
+- **Apache Airflow** - Orchestration de pipelines MLOps
+- **PostgreSQL** - Base de données Airflow
 - **uvicorn** - Serveur ASGI
 
 ## 🔧 Commandes utiles
@@ -130,6 +151,9 @@ docker compose -f webapp/docker-compose.yml up --build --force-recreate
 
 # Reporting
 docker compose -f reporting/docker-compose.yml up --build --force-recreate
+
+# Airflow
+cd airflow && docker compose up --build -d
 ```
 
 ### Arrêter les services
@@ -139,9 +163,10 @@ docker compose -f reporting/docker-compose.yml up --build --force-recreate
 docker compose -f serving/docker-compose.yml down
 docker compose -f webapp/docker-compose.yml down
 docker compose -f reporting/docker-compose.yml down
+cd airflow && docker compose down
 
 # Ou avec un seul script
-docker stop webapp serving-api reporting
+docker stop webapp serving-api reporting airflow-webserver airflow-scheduler
 ```
 
 ### Voir les logs
@@ -149,6 +174,7 @@ docker stop webapp serving-api reporting
 ```bash
 docker logs webapp -f
 docker logs serving-api -f
+docker logs airflow-scheduler -f
 ```
 
 ## 🧪 Tests

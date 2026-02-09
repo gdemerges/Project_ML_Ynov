@@ -333,7 +333,7 @@ st.markdown("""
 st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
 
 # ---------------------------------------------------------------------------
-# Sidebar – input form
+# Sidebar – input form (matching ML model features)
 # ---------------------------------------------------------------------------
 with st.sidebar:
     st.markdown('<p class="section-label">Configuration</p>', unsafe_allow_html=True)
@@ -342,60 +342,56 @@ with st.sidebar:
     # ---- Demographics ----
     st.markdown('<p class="section-label" style="margin-top:1rem;">Demographics</p>', unsafe_allow_html=True)
 
-    gender = st.selectbox("Gender", ["Male", "Female", "Non-binary"], index=0)
-    age = st.number_input("Age", min_value=16, max_value=60, value=20)
-    city = st.text_input("City", placeholder="e.g. Paris, Lyon...")
-    profession = st.selectbox("Occupation", ["Student", "Part-time Job", "Full-time Job", "Unemployed"])
+    gender = st.selectbox("Gender", ["Male", "Female"], index=0)
+    age = st.number_input("Age", min_value=16, max_value=60, value=22)
+    department = st.selectbox("Department", ["Science", "Engineering", "Medical", "Arts", "Business"])
 
     # ---- Academic ----
-    st.markdown('<p class="section-label" style="margin-top:1.2rem;">Academic & Lifestyle</p>', unsafe_allow_html=True)
+    st.markdown('<p class="section-label" style="margin-top:1.2rem;">Academic Performance</p>', unsafe_allow_html=True)
 
-    cgpa = st.slider("CGPA", 0.0, 4.0, 3.0, 0.1)
-    sleep_duration = st.slider("Sleep (h/day)", 0.0, 12.0, 7.0, 0.5)
-    study_hours = st.slider("Study (h/day)", 0.0, 16.0, 4.0, 0.5)
-    dietary_habits = st.selectbox("Diet quality", ["Healthy", "Moderate", "Unhealthy"])
+    cgpa = st.slider("CGPA", 0.0, 4.0, 3.0, 0.01)
+    study_hours = st.slider("Study Hours (per day)", 0.0, 16.0, 4.0, 0.1)
 
-    # ---- Psychological ----
-    st.markdown('<p class="section-label" style="margin-top:1.2rem;">Psychological Factors</p>', unsafe_allow_html=True)
+    # ---- Lifestyle ----
+    st.markdown('<p class="section-label" style="margin-top:1.2rem;">Lifestyle Factors</p>', unsafe_allow_html=True)
 
-    academic_pressure = st.slider("Academic pressure", 1, 10, 5)
-    work_pressure = st.slider("Work pressure", 1, 10, 5)
-    study_satisfaction = st.slider("Study satisfaction", 1, 10, 5)
-    job_satisfaction = st.slider("Job satisfaction", 1, 10, 5)
-    financial_stress = st.slider("Financial stress", 1, 10, 5)
-    family_history = st.selectbox("Family history of mental illness", ["No", "Yes"])
+    sleep_duration = st.slider("Sleep Duration (hours/day)", 0.0, 12.0, 7.0, 0.1)
+    social_media_hours = st.slider("Social Media (hours/day)", 0.0, 16.0, 3.0, 0.1)
+    physical_activity = st.slider("Physical Activity (minutes/week)", 0, 500, 120, 5)
+
+    # ---- Mental Health ----
+    st.markdown('<p class="section-label" style="margin-top:1.2rem;">Mental Health</p>', unsafe_allow_html=True)
+
+    stress_level = st.slider("Stress Level", 1, 10, 5)
 
     st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
 
     predict_clicked = st.button("Run Analysis", type="primary", use_container_width=True)
 
 # ---------------------------------------------------------------------------
-# Assemble data payload
+# Assemble data payload (matching ML model schema)
 # ---------------------------------------------------------------------------
 data = {
-    "Gender": gender,
+    "Student_ID": 9999,  # Placeholder, not used for prediction
     "Age": age,
-    "City": city if city else "Unknown",
-    "Profession": profession,
+    "Gender": gender,
+    "Department": department,
     "CGPA": cgpa,
     "Sleep_Duration": sleep_duration,
     "Study_Hours": study_hours,
-    "Dietary_Habits": dietary_habits,
-    "Academic_Pressure": academic_pressure,
-    "Work_Pressure": work_pressure,
-    "Study_Satisfaction": study_satisfaction,
-    "Job_Satisfaction": job_satisfaction,
-    "Financial_Stress": financial_stress,
-    "Family_History": family_history,
+    "Social_Media_Hours": social_media_hours,
+    "Physical_Activity": physical_activity,
+    "Stress_Level": stress_level,
 }
 
-# Psychological scores dict (for charts)
-psych_scores = {
-    "Academic Pressure": academic_pressure,
-    "Work Pressure": work_pressure,
-    "Financial Stress": financial_stress,
-    "Study Satisfaction": study_satisfaction,
-    "Job Satisfaction": job_satisfaction,
+# Profile scores for visualization
+profile_scores = {
+    "CGPA": cgpa / 4 * 10,  # Normalize to 0-10 scale
+    "Sleep": sleep_duration / 12 * 10,
+    "Study": study_hours / 16 * 10,
+    "Social Media": social_media_hours / 16 * 10,
+    "Physical Activity": physical_activity / 500 * 10,
+    "Stress": stress_level,
 }
 
 # ---------------------------------------------------------------------------
@@ -412,7 +408,7 @@ st.markdown(f"""
         <div class="metric-label">Age</div>
     </div>
     <div class="metric-card">
-        <div class="metric-value">{cgpa:.1f}</div>
+        <div class="metric-value">{cgpa:.2f}</div>
         <div class="metric-label">CGPA</div>
     </div>
     <div class="metric-card">
@@ -424,8 +420,8 @@ st.markdown(f"""
         <div class="metric-label">Study</div>
     </div>
     <div class="metric-card">
-        <div class="metric-value">{financial_stress}/10</div>
-        <div class="metric-label">Fin. Stress</div>
+        <div class="metric-value">{stress_level}/10</div>
+        <div class="metric-label">Stress</div>
     </div>
 </div>
 """, unsafe_allow_html=True)
@@ -435,33 +431,32 @@ col_radar, col_bar = st.columns([1, 1])
 
 with col_radar:
     st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-    st.markdown('<p class="section-label">Psychological Radar</p>', unsafe_allow_html=True)
-    st.plotly_chart(make_radar(psych_scores), use_container_width=True, config={"displayModeBar": False})
+    st.markdown('<p class="section-label">Student Profile Radar</p>', unsafe_allow_html=True)
+    st.plotly_chart(make_radar(profile_scores), use_container_width=True, config={"displayModeBar": False})
     st.markdown('</div>', unsafe_allow_html=True)
 
 with col_bar:
     st.markdown('<div class="glass-card">', unsafe_allow_html=True)
     st.markdown('<p class="section-label">Factor Breakdown</p>', unsafe_allow_html=True)
-    st.plotly_chart(make_bar_profile(psych_scores), use_container_width=True, config={"displayModeBar": False})
+    st.plotly_chart(make_bar_profile(profile_scores), use_container_width=True, config={"displayModeBar": False})
     st.markdown('</div>', unsafe_allow_html=True)
 
 # --- Gauge row ---
 g1, g2, g3 = st.columns(3)
 with g1:
     st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-    avg_stress = round((academic_pressure + work_pressure + financial_stress) / 3, 1)
-    st.plotly_chart(make_gauge(avg_stress, "Avg Stress", color="#f472b6"),
+    st.plotly_chart(make_gauge(stress_level, "Stress Level", color="#f472b6"),
                     use_container_width=True, config={"displayModeBar": False})
     st.markdown('</div>', unsafe_allow_html=True)
 with g2:
     st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-    avg_satisfaction = round((study_satisfaction + job_satisfaction) / 2, 1)
-    st.plotly_chart(make_gauge(avg_satisfaction, "Avg Satisfaction", color="#34d399"),
+    academic_score = round((cgpa / 4 * 5) + (study_hours / 16 * 5), 1)
+    st.plotly_chart(make_gauge(academic_score, "Academic Score", color="#34d399"),
                     use_container_width=True, config={"displayModeBar": False})
     st.markdown('</div>', unsafe_allow_html=True)
 with g3:
     st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-    lifestyle_score = round(min(10, (sleep_duration / 8 * 5) + (cgpa / 4 * 5)), 1)
+    lifestyle_score = round((sleep_duration / 8 * 5) + (physical_activity / 500 * 5), 1)
     st.plotly_chart(make_gauge(lifestyle_score, "Lifestyle Score", color="#818cf8"),
                     use_container_width=True, config={"displayModeBar": False})
     st.markdown('</div>', unsafe_allow_html=True)
@@ -517,19 +512,26 @@ if predict_clicked:
                     st.markdown('<div class="glass-card">', unsafe_allow_html=True)
                     st.markdown('<p class="section-label">Recommendations</p>', unsafe_allow_html=True)
                     if is_at_risk:
-                        st.markdown("""
-                        - Consult a mental health professional
-                        - Reach out to your university's counseling services
-                        - Talk to someone you trust
-                        - Consider stress management techniques
-                        """)
+                        recommendations = ["- Consult a mental health professional", "- Reach out to your university's counseling services"]
+                        if stress_level >= 7:
+                            recommendations.append("- Practice stress management techniques (meditation, breathing exercises)")
+                        if sleep_duration < 6:
+                            recommendations.append("- Prioritize getting 7-9 hours of sleep per night")
+                        if physical_activity < 60:
+                            recommendations.append("- Increase physical activity (aim for 150+ min/week)")
+                        if social_media_hours > 5:
+                            recommendations.append("- Reduce social media usage and connect in person")
+                        st.markdown("\n".join(recommendations))
                     else:
-                        st.markdown("""
-                        - Maintain your current healthy habits
-                        - Keep a balanced sleep schedule
-                        - Stay physically active
-                        - Stay connected with friends & family
-                        """)
+                        recommendations = ["- Maintain your current healthy habits"]
+                        if sleep_duration >= 7:
+                            recommendations.append("- Continue your good sleep schedule")
+                        if physical_activity >= 120:
+                            recommendations.append("- Keep up your physical activity routine")
+                        if stress_level <= 4:
+                            recommendations.append("- Your stress management strategies are working well")
+                        recommendations.append("- Stay connected with friends & family")
+                        st.markdown("\n".join(recommendations))
                     st.markdown('</div>', unsafe_allow_html=True)
 
                 with rec_col2:
