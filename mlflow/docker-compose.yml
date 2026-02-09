@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  mlflow-server:
+    image: ghcr.io/mlflow/mlflow:v2.12.1
+    container_name: mlflow-tracking-server
+    ports:
+      - "5000:5000"
+    environment:
+      - MLFLOW_TRACKING_URI=http://0.0.0.0:5000
+    volumes:
+      - mlflow_data:/mlflow/mlruns
+      - ../artifacts:/mlflow/artifacts
+    command: >
+      mlflow server
+      --host 0.0.0.0
+      --port 5000
+      --backend-store-uri sqlite:///mlflow/mlruns/mlflow.db
+      --default-artifact-root /mlflow/artifacts
+    networks:
+      - mlflow-network
+    restart: unless-stopped
+
+  # Service optionnel avec PostgreSQL pour la production
+  # mlflow-db:
+  #   image: postgres:15
+  #   container_name: mlflow-postgres
+  #   environment:
+  #     POSTGRES_USER: mlflow
+  #     POSTGRES_PASSWORD: mlflow_secret
+  #     POSTGRES_DB: mlflow_db
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   networks:
+  #     - mlflow-network
+
+volumes:
+  mlflow_data:
+  # postgres_data:
+
+networks:
+  mlflow-network:
+    driver: bridge

@@ -11,6 +11,7 @@ Ce projet implémente une solution complète de ML en production avec :
 - 🐳 **Conteneurisation (Docker)** - Déploiement simplifié
 - 🔄 **Réentraînement automatique** - Amélioration continue
 - ⚙️ **Orchestration (Airflow)** - Pipeline MLOps automatisé
+- 🔬 **MLflow** - Tracking des expériences et Model Registry
 
 ## 📊 Dataset
 
@@ -30,6 +31,8 @@ Project_ML_Ynov/
 ├── data/                          # Données (ref_data.csv, prod_data.csv)
 ├── artifacts/                     # Modèles entraînés (pickle files)
 ├── scripts/                       # Scripts d'entraînement et notebooks
+│   ├── students_scripts.py
+│   └── train_with_mlflow.py       # Entraînement avec MLflow ✅
 ├── serving/                       # API FastAPI
 │   ├── api.py
 │   ├── Dockerfile
@@ -46,9 +49,14 @@ Project_ML_Ynov/
 │   ├── Dockerfile
 │   ├── docker-compose.yml
 │   └── requirements.txt
+├── mlflow/                        # MLflow Tracking ✅
+│   ├── docker-compose.yml
+│   ├── mlflow_config.py
+│   ├── requirements.txt
+│   └── README.md
 ├── airflow/                       # Orchestration MLOps ✅
 │   ├── dags/
-│   │   ├── ml_retrain_pipeline.py
+│   │   ├── ml_retrain_pipeline.py  # Intégration MLflow
 │   │   └── evidently_reporting_pipeline.py
 │   ├── docker-compose.yml
 │   ├── requirements.txt
@@ -99,6 +107,15 @@ docker compose up -d
 L'interface Airflow sera accessible sur : **http://localhost:8083**
 **Identifiants :** admin / admin
 
+### 5. (Optionnel) Démarrer MLflow Tracking Server
+
+```bash
+cd mlflow
+docker compose up -d
+```
+
+L'interface MLflow sera accessible sur : **http://localhost:5000**
+
 ## 💻 Utilisation de l'application web
 
 1. **Ouvrez votre navigateur** à `http://localhost:8081`
@@ -135,6 +152,7 @@ L'interface Airflow sera accessible sur : **http://localhost:8083**
 - **Docker** - Conteneurisation
 - **Docker Compose** - Orchestration
 - **Apache Airflow** - Orchestration de pipelines MLOps
+- **MLflow** - Tracking des expériences et Model Registry
 - **PostgreSQL** - Base de données Airflow
 - **uvicorn** - Serveur ASGI
 

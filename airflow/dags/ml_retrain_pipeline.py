@@ -1,6 +1,8 @@
 """
 DAG Airflow pour le réentraînement automatique du modèle ML
 Projet: MindPulse - Student Depression Prediction
+
+Intégration MLflow pour le tracking des expériences et le model registry.
 """
 
 from datetime import datetime, timedelta
@@ -13,13 +15,38 @@ import pickle
 import os
 from pathlib import Path
 
+# MLflow imports
+import mlflow
+import mlflow.sklearn
+from mlflow.tracking import MlflowClient
+from mlflow.models.signature import infer_signature
+
 # Configuration des chemins
 DATA_PATH = Path("/opt/airflow/data")
 ARTIFACTS_PATH = Path("/opt/airflow/artifacts")
 SCRIPTS_PATH = Path("/opt/airflow/scripts")
 
+# Configuration MLflow
+MLFLOW_TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI", "http://mlflow-server:5000")
+MLFLOW_EXPERIMENT_NAME = "student-depression-prediction"
+MLFLOW_MODEL_NAME = "depression-classifier"
+
 # Seuil pour déclencher le réentraînement
 RETRAIN_THRESHOLD = 1000  # Nombre de nouvelles données de production
+
+
+def setup_mlflow():
+    """Configure MLflow pour le tracking"""
+    mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
+    
+    experiment = mlflow.get_experiment_by_name(MLFLOW_EXPERIMENT_NAME)
+    if experiment is None:
+        experiment_id = mlflow.create_experiment(MLFLOW_EXPERIMENT_NAME)
+    else:
+        experiment_id = experiment.experiment_id
+    
+    mlflow.set_experiment(MLFLOW_EXPERIMENT_NAME)
+    return experiment_id
 
 
 def check_production_data(**context):
@@ -121,7 +148,7 @@ def merge_production_data(**context):
 
 
 def train_new_model(**context):
-    """Entraîne un nouveau modèle sur les données fusionnées"""
+    """Entraîne un nouveau modèle sur les données fusionnées avec tracking MLflow"""
     from sklearn.model_selection import train_test_split
     from sklearn.preprocessing import StandardScaler, OneHotEncoder
     from sklearn.compose import ColumnTransformer
@@ -130,8 +157,11 @@ def train_new_model(**context):
     from sklearn.linear_model import LogisticRegression
     from sklearn.ensemble import RandomForestClassifier
     from xgboost import XGBClassifier
-    from sklearn.metrics import accuracy_score, f1_score
+    from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, roc_auc_score
 
+    # Setup MLflow
+    setup_mlflow()
+    
     merged_path = DATA_PATH / "merged_training_data.csv"
     data = pd.read_csv(merged_path)
 
@@ -150,9 +180,10 @@ def train_new_model(**context):
             ('cat', OneHotEncoder(handle_unknown='ignore', sparse_output=False), categorical_features)
         ])
 
+    pca_components = 0.95
     embedding_pipeline = Pipeline(steps=[
         ('preprocessor', preprocessor),
-        ('pca', PCA(n_components=0.95))
+        ('pca', PCA(n_components=pca_components))
     ])
 
     # Transformer les données
@@ -163,35 +194,138 @@ def train_new_model(**context):
         X_embedded, y, test_size=0.2, random_state=42
     )
 
-    # Entraîner plusieurs modèles
-    models = {
-        "Logistic Regression": LogisticRegression(max_iter=1000),
-        "Random Forest": RandomForestClassifier(n_estimators=100, random_state=42),
-        "XGBoost": XGBClassifier(use_label_encoder=False, eval_metric='logloss')
+    # Configuration des modèles avec hyperparamètres
+    models_config = {
+        "Logistic_Regression": {
+            "model": LogisticRegression(max_iter=1000, random_state=42),
+            "params": {"max_iter": 1000, "solver": "lbfgs"}
+        },
+        "Random_Forest": {
+            "model": RandomForestClassifier(n_estimators=100, max_depth=10, random_state=42),
+            "params": {"n_estimators": 100, "max_depth": 10}
+        },
+        "XGBoost": {
+            "model": XGBClassifier(n_estimators=100, max_depth=6, learning_rate=0.1,
+                                   use_label_encoder=False, eval_metric='logloss', random_state=42),
+            "params": {"n_estimators": 100, "max_depth": 6, "learning_rate": 0.1}
+        }
     }
 
     best_model = None
     best_score = 0
     best_model_name = ""
+    best_run_id = None
+    best_metrics = {}
 
-    print("\n🔄 Comparaison des modèles:")
-    for name, model in models.items():
-        model.fit(X_train, y_train)
-        y_pred = model.predict(X_test)
-
-        acc = accuracy_score(y_test, y_pred)
-        f1 = f1_score(y_test, y_pred, average='weighted')
-
-        print(f"   {name}: Accuracy={acc:.4f}, F1-Score={f1:.4f}")
-
-        if acc > best_score:
-            best_score = acc
-            best_model = model
-            best_model_name = name
+    print("\n🔄 Comparaison des modèles avec MLflow:")
+    
+    for name, config in models_config.items():
+        model = config["model"]
+        params = config["params"]
+        
+        # Démarrer un run MLflow pour chaque modèle
+        with mlflow.start_run(run_name=f"retrain_{name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}") as run:
+            run_id = run.info.run_id
+            
+            # Tags
+            mlflow.set_tag("model_type", name)
+            mlflow.set_tag("training_type", "retraining")
+            mlflow.set_tag("triggered_by", "airflow_dag")
+            
+            # Log des paramètres
+            params["pca_components"] = pca_components
+            params["test_size"] = 0.2
+            params["dataset_size"] = len(data)
+            mlflow.log_params(params)
+            
+            # Entraînement
+            model.fit(X_train, y_train)
+            y_pred = model.predict(X_test)
+            y_pred_proba = model.predict_proba(X_test)[:, 1] if hasattr(model, 'predict_proba') else None
+            
+            # Métriques
+            acc = accuracy_score(y_test, y_pred)
+            f1 = f1_score(y_test, y_pred, average='weighted')
+            precision = precision_score(y_test, y_pred, average='weighted')
+            recall = recall_score(y_test, y_pred, average='weighted')
+            
+            metrics = {
+                "accuracy": acc,
+                "f1_score": f1,
+                "precision": precision,
+                "recall": recall
+            }
+            
+            if y_pred_proba is not None:
+                metrics["roc_auc"] = roc_auc_score(y_test, y_pred_proba)
+            
+            # Log des métriques
+            mlflow.log_metrics(metrics)
+            
+            # Log du modèle
+            signature = infer_signature(X_train, y_pred)
+            mlflow.sklearn.log_model(model, "model", signature=signature)
+            
+            print(f"   {name}: Accuracy={acc:.4f}, F1={f1:.4f} [Run: {run_id[:8]}...]")
+            
+            if acc > best_score:
+                best_score = acc
+                best_model = model
+                best_model_name = name
+                best_run_id = run_id
+                best_metrics = metrics
 
     print(f"\n🏆 Meilleur modèle: {best_model_name} (Accuracy: {best_score:.4f})")
+    
+    # Enregistrer le meilleur modèle dans le Model Registry
+    client = MlflowClient()
+    model_uri = f"runs:/{best_run_id}/model"
+    
+    try:
+        # Enregistrer le modèle
+        mv = mlflow.register_model(model_uri, MLFLOW_MODEL_NAME)
+        
+        # Comparer avec le modèle en production
+        try:
+            prod_versions = client.get_latest_versions(MLFLOW_MODEL_NAME, stages=["Production"])
+            if prod_versions:
+                prod_run = client.get_run(prod_versions[0].run_id)
+                prod_accuracy = float(prod_run.data.metrics.get("accuracy", 0))
+                
+                if best_score > prod_accuracy:
+                    client.transition_model_version_stage(
+                        name=MLFLOW_MODEL_NAME,
+                        version=mv.version,
+                        stage="Production",
+                        archive_existing_versions=True
+                    )
+                    print(f"✅ Nouveau modèle promu en Production (v{mv.version})")
+                else:
+                    client.transition_model_version_stage(
+                        name=MLFLOW_MODEL_NAME,
+                        version=mv.version,
+                        stage="Staging"
+                    )
+                    print(f"📦 Modèle enregistré en Staging (v{mv.version})")
+            else:
+                client.transition_model_version_stage(
+                    name=MLFLOW_MODEL_NAME,
+                    version=mv.version,
+                    stage="Production"
+                )
+                print(f"✅ Premier modèle enregistré en Production (v{mv.version})")
+        except Exception as e:
+            client.transition_model_version_stage(
+                name=MLFLOW_MODEL_NAME,
+                version=mv.version,
+                stage="Production"
+            )
+            print(f"✅ Modèle enregistré en Production (v{mv.version})")
+            
+    except Exception as e:
+        print(f"⚠️ Erreur lors de l'enregistrement MLflow: {e}")
 
-    # Sauvegarder le meilleur modèle
+    # Sauvegarder aussi localement pour compatibilité
     with open(ARTIFACTS_PATH / "model.pickle", "wb") as f:
         pickle.dump(best_model, f)
 
@@ -203,7 +337,8 @@ def train_new_model(**context):
     # Pousser les métriques dans XCom
     context['task_instance'].xcom_push(key='model_name', value=best_model_name)
     context['task_instance'].xcom_push(key='accuracy', value=best_score)
-    context['task_instance'].xcom_push(key='f1_score', value=f1)
+    context['task_instance'].xcom_push(key='f1_score', value=best_metrics.get('f1_score', 0))
+    context['task_instance'].xcom_push(key='mlflow_run_id', value=best_run_id)
 
 
 def archive_production_data(**context):
@@ -222,16 +357,19 @@ def archive_production_data(**context):
 
 
 def notify_retrain_success(**context):
-    """Notifie le succès du réentraînement"""
+    """Notifie le succès du réentraînement avec infos MLflow"""
     ti = context['task_instance']
     model_name = ti.xcom_pull(task_ids='train_new_model', key='model_name')
     accuracy = ti.xcom_pull(task_ids='train_new_model', key='accuracy')
+    mlflow_run_id = ti.xcom_pull(task_ids='train_new_model', key='mlflow_run_id')
 
     print("\n" + "="*60)
     print("🎉 RÉENTRAÎNEMENT TERMINÉ AVEC SUCCÈS")
     print("="*60)
     print(f"📊 Modèle: {model_name}")
     print(f"📈 Accuracy: {accuracy:.4f}")
+    print(f"🔗 MLflow Run ID: {mlflow_run_id}")
+    print(f"🌐 MLflow UI: {MLFLOW_TRACKING_URI}")
     print(f"📅 Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print("="*60 + "\n")
 
