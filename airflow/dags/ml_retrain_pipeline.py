@@ -27,7 +27,7 @@ ARTIFACTS_PATH = Path("/opt/airflow/artifacts")
 SCRIPTS_PATH = Path("/opt/airflow/scripts")
 
 # Configuration MLflow
-MLFLOW_TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI", "http://mlflow-server:5000")
+MLFLOW_TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI", "http://host.docker.internal:5001")
 MLFLOW_EXPERIMENT_NAME = "student-depression-prediction"
 MLFLOW_MODEL_NAME = "depression-classifier"
 

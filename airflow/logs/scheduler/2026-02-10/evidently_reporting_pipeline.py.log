@@ -1,0 +1,196 @@
+[2026-02-10T21:00:07.520+0000] {processor.py:161} INFO - Started process (PID=172) to work on /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:00:07.522+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/evidently_reporting_pipeline.py for tasks to queue
+[2026-02-10T21:00:07.527+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:00:07.527+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:00:07.710+0000] {processor.py:840} INFO - DAG(s) 'evidently_reporting_pipeline' retrieved from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:00:07.771+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:00:07.771+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2026-02-10T21:00:07.780+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:00:07.780+0000] {dag.py:3954} INFO - Setting next_dagrun for evidently_reporting_pipeline to 2026-02-10 12:00:00+00:00, run_after=2026-02-10 18:00:00+00:00
+[2026-02-10T21:00:07.789+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/evidently_reporting_pipeline.py took 0.272 seconds
+[2026-02-10T21:00:38.011+0000] {processor.py:161} INFO - Started process (PID=190) to work on /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:00:38.012+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/evidently_reporting_pipeline.py for tasks to queue
+[2026-02-10T21:00:38.014+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:00:38.014+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:00:38.201+0000] {processor.py:840} INFO - DAG(s) 'evidently_reporting_pipeline' retrieved from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:00:38.222+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:00:38.222+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2026-02-10T21:00:38.233+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:00:38.233+0000] {dag.py:3954} INFO - Setting next_dagrun for evidently_reporting_pipeline to 2026-02-10 12:00:00+00:00, run_after=2026-02-10 18:00:00+00:00
+[2026-02-10T21:00:38.241+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/evidently_reporting_pipeline.py took 0.236 seconds
+[2026-02-10T21:01:08.491+0000] {processor.py:161} INFO - Started process (PID=208) to work on /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:01:08.493+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/evidently_reporting_pipeline.py for tasks to queue
+[2026-02-10T21:01:08.497+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:01:08.497+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:01:08.623+0000] {processor.py:840} INFO - DAG(s) 'evidently_reporting_pipeline' retrieved from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:01:08.637+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:01:08.637+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2026-02-10T21:01:08.647+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:01:08.647+0000] {dag.py:3954} INFO - Setting next_dagrun for evidently_reporting_pipeline to 2026-02-10 12:00:00+00:00, run_after=2026-02-10 18:00:00+00:00
+[2026-02-10T21:01:08.654+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/evidently_reporting_pipeline.py took 0.169 seconds
+[2026-02-10T21:01:38.938+0000] {processor.py:161} INFO - Started process (PID=226) to work on /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:01:38.941+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/evidently_reporting_pipeline.py for tasks to queue
+[2026-02-10T21:01:38.942+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:01:38.942+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:01:39.076+0000] {processor.py:840} INFO - DAG(s) 'evidently_reporting_pipeline' retrieved from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:01:39.096+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:01:39.096+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2026-02-10T21:01:39.104+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:01:39.104+0000] {dag.py:3954} INFO - Setting next_dagrun for evidently_reporting_pipeline to 2026-02-10 12:00:00+00:00, run_after=2026-02-10 18:00:00+00:00
+[2026-02-10T21:01:39.109+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/evidently_reporting_pipeline.py took 0.178 seconds
+[2026-02-10T21:02:09.425+0000] {processor.py:161} INFO - Started process (PID=249) to work on /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:02:09.425+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/evidently_reporting_pipeline.py for tasks to queue
+[2026-02-10T21:02:09.427+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:02:09.427+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:02:09.562+0000] {processor.py:840} INFO - DAG(s) 'evidently_reporting_pipeline' retrieved from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:02:09.574+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:02:09.573+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2026-02-10T21:02:09.582+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:02:09.582+0000] {dag.py:3954} INFO - Setting next_dagrun for evidently_reporting_pipeline to 2026-02-10 12:00:00+00:00, run_after=2026-02-10 18:00:00+00:00
+[2026-02-10T21:02:09.588+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/evidently_reporting_pipeline.py took 0.168 seconds
+[2026-02-10T21:02:39.857+0000] {processor.py:161} INFO - Started process (PID=267) to work on /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:02:39.857+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/evidently_reporting_pipeline.py for tasks to queue
+[2026-02-10T21:02:39.858+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:02:39.858+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:02:39.983+0000] {processor.py:840} INFO - DAG(s) 'evidently_reporting_pipeline' retrieved from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:02:39.999+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:02:39.998+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2026-02-10T21:02:40.007+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:02:40.007+0000] {dag.py:3954} INFO - Setting next_dagrun for evidently_reporting_pipeline to 2026-02-10 12:00:00+00:00, run_after=2026-02-10 18:00:00+00:00
+[2026-02-10T21:02:40.014+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/evidently_reporting_pipeline.py took 0.162 seconds
+[2026-02-10T21:03:10.283+0000] {processor.py:161} INFO - Started process (PID=285) to work on /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:03:10.283+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/evidently_reporting_pipeline.py for tasks to queue
+[2026-02-10T21:03:10.285+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:03:10.285+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:03:10.402+0000] {processor.py:840} INFO - DAG(s) 'evidently_reporting_pipeline' retrieved from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:03:10.420+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:03:10.420+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2026-02-10T21:03:10.429+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:03:10.429+0000] {dag.py:3954} INFO - Setting next_dagrun for evidently_reporting_pipeline to 2026-02-10 12:00:00+00:00, run_after=2026-02-10 18:00:00+00:00
+[2026-02-10T21:03:10.435+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/evidently_reporting_pipeline.py took 0.158 seconds
+[2026-02-10T21:03:40.748+0000] {processor.py:161} INFO - Started process (PID=303) to work on /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:03:40.749+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/evidently_reporting_pipeline.py for tasks to queue
+[2026-02-10T21:03:40.750+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:03:40.750+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:03:40.904+0000] {processor.py:840} INFO - DAG(s) 'evidently_reporting_pipeline' retrieved from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:03:40.928+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:03:40.927+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2026-02-10T21:03:40.942+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:03:40.941+0000] {dag.py:3954} INFO - Setting next_dagrun for evidently_reporting_pipeline to 2026-02-10 12:00:00+00:00, run_after=2026-02-10 18:00:00+00:00
+[2026-02-10T21:03:40.948+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/evidently_reporting_pipeline.py took 0.207 seconds
+[2026-02-10T21:04:11.274+0000] {processor.py:161} INFO - Started process (PID=321) to work on /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:04:11.275+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/evidently_reporting_pipeline.py for tasks to queue
+[2026-02-10T21:04:11.276+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:04:11.276+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:04:11.412+0000] {processor.py:840} INFO - DAG(s) 'evidently_reporting_pipeline' retrieved from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:04:11.437+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:04:11.437+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2026-02-10T21:04:11.450+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:04:11.450+0000] {dag.py:3954} INFO - Setting next_dagrun for evidently_reporting_pipeline to 2026-02-10 12:00:00+00:00, run_after=2026-02-10 18:00:00+00:00
+[2026-02-10T21:04:11.457+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/evidently_reporting_pipeline.py took 0.189 seconds
+[2026-02-10T21:04:41.715+0000] {processor.py:161} INFO - Started process (PID=339) to work on /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:04:41.716+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/evidently_reporting_pipeline.py for tasks to queue
+[2026-02-10T21:04:41.718+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:04:41.718+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:04:41.867+0000] {processor.py:840} INFO - DAG(s) 'evidently_reporting_pipeline' retrieved from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:04:41.888+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:04:41.887+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2026-02-10T21:04:41.899+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:04:41.899+0000] {dag.py:3954} INFO - Setting next_dagrun for evidently_reporting_pipeline to 2026-02-10 12:00:00+00:00, run_after=2026-02-10 18:00:00+00:00
+[2026-02-10T21:04:41.906+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/evidently_reporting_pipeline.py took 0.196 seconds
+[2026-02-10T21:05:12.530+0000] {processor.py:161} INFO - Started process (PID=357) to work on /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:05:12.531+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/evidently_reporting_pipeline.py for tasks to queue
+[2026-02-10T21:05:12.536+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:05:12.536+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:05:12.978+0000] {processor.py:840} INFO - DAG(s) 'evidently_reporting_pipeline' retrieved from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:05:13.000+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:05:13.000+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2026-02-10T21:05:13.279+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:05:13.279+0000] {dag.py:3954} INFO - Setting next_dagrun for evidently_reporting_pipeline to 2026-02-10 12:00:00+00:00, run_after=2026-02-10 18:00:00+00:00
+[2026-02-10T21:05:13.502+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/evidently_reporting_pipeline.py took 0.990 seconds
+[2026-02-10T21:05:43.889+0000] {processor.py:161} INFO - Started process (PID=375) to work on /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:05:43.890+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/evidently_reporting_pipeline.py for tasks to queue
+[2026-02-10T21:05:43.892+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:05:43.892+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:05:44.060+0000] {processor.py:840} INFO - DAG(s) 'evidently_reporting_pipeline' retrieved from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:05:44.087+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:05:44.086+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2026-02-10T21:05:44.096+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:05:44.096+0000] {dag.py:3954} INFO - Setting next_dagrun for evidently_reporting_pipeline to 2026-02-10 12:00:00+00:00, run_after=2026-02-10 18:00:00+00:00
+[2026-02-10T21:05:44.103+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/evidently_reporting_pipeline.py took 0.222 seconds
+[2026-02-10T21:06:14.435+0000] {processor.py:161} INFO - Started process (PID=393) to work on /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:06:14.435+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/evidently_reporting_pipeline.py for tasks to queue
+[2026-02-10T21:06:14.437+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:06:14.437+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:06:14.594+0000] {processor.py:840} INFO - DAG(s) 'evidently_reporting_pipeline' retrieved from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:06:14.716+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:06:14.716+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2026-02-10T21:06:14.724+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:06:14.724+0000] {dag.py:3954} INFO - Setting next_dagrun for evidently_reporting_pipeline to 2026-02-10 12:00:00+00:00, run_after=2026-02-10 18:00:00+00:00
+[2026-02-10T21:06:14.730+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/evidently_reporting_pipeline.py took 0.300 seconds
+[2026-02-10T21:06:44.943+0000] {processor.py:161} INFO - Started process (PID=411) to work on /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:06:44.944+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/evidently_reporting_pipeline.py for tasks to queue
+[2026-02-10T21:06:44.946+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:06:44.946+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:06:45.080+0000] {processor.py:840} INFO - DAG(s) 'evidently_reporting_pipeline' retrieved from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:06:45.102+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:06:45.102+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2026-02-10T21:06:45.268+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:06:45.268+0000] {dag.py:3954} INFO - Setting next_dagrun for evidently_reporting_pipeline to 2026-02-10 12:00:00+00:00, run_after=2026-02-10 18:00:00+00:00
+[2026-02-10T21:06:45.278+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/evidently_reporting_pipeline.py took 0.339 seconds
+[2026-02-10T21:07:15.529+0000] {processor.py:161} INFO - Started process (PID=429) to work on /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:07:15.534+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/evidently_reporting_pipeline.py for tasks to queue
+[2026-02-10T21:07:15.540+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:07:15.539+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:07:15.848+0000] {processor.py:840} INFO - DAG(s) 'evidently_reporting_pipeline' retrieved from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:07:15.858+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:07:15.858+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2026-02-10T21:07:15.866+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:07:15.865+0000] {dag.py:3954} INFO - Setting next_dagrun for evidently_reporting_pipeline to 2026-02-10 12:00:00+00:00, run_after=2026-02-10 18:00:00+00:00
+[2026-02-10T21:07:15.872+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/evidently_reporting_pipeline.py took 0.356 seconds
+[2026-02-10T21:07:46.067+0000] {processor.py:161} INFO - Started process (PID=447) to work on /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:07:46.069+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/evidently_reporting_pipeline.py for tasks to queue
+[2026-02-10T21:07:46.072+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:07:46.072+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:07:46.185+0000] {processor.py:840} INFO - DAG(s) 'evidently_reporting_pipeline' retrieved from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:07:46.408+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:07:46.407+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2026-02-10T21:07:46.414+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:07:46.414+0000] {dag.py:3954} INFO - Setting next_dagrun for evidently_reporting_pipeline to 2026-02-10 12:00:00+00:00, run_after=2026-02-10 18:00:00+00:00
+[2026-02-10T21:07:46.419+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/evidently_reporting_pipeline.py took 0.357 seconds
+[2026-02-10T21:08:16.636+0000] {processor.py:161} INFO - Started process (PID=465) to work on /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:08:16.638+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/evidently_reporting_pipeline.py for tasks to queue
+[2026-02-10T21:08:16.640+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:08:16.640+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:08:16.882+0000] {processor.py:840} INFO - DAG(s) 'evidently_reporting_pipeline' retrieved from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:08:16.893+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:08:16.893+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2026-02-10T21:08:16.903+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:08:16.903+0000] {dag.py:3954} INFO - Setting next_dagrun for evidently_reporting_pipeline to 2026-02-10 12:00:00+00:00, run_after=2026-02-10 18:00:00+00:00
+[2026-02-10T21:08:16.910+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/evidently_reporting_pipeline.py took 0.278 seconds
+[2026-02-10T21:08:47.202+0000] {processor.py:161} INFO - Started process (PID=483) to work on /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:08:47.203+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/evidently_reporting_pipeline.py for tasks to queue
+[2026-02-10T21:08:47.204+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:08:47.204+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:08:47.404+0000] {processor.py:840} INFO - DAG(s) 'evidently_reporting_pipeline' retrieved from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:08:47.415+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:08:47.415+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2026-02-10T21:08:47.422+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:08:47.422+0000] {dag.py:3954} INFO - Setting next_dagrun for evidently_reporting_pipeline to 2026-02-10 12:00:00+00:00, run_after=2026-02-10 18:00:00+00:00
+[2026-02-10T21:08:47.427+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/evidently_reporting_pipeline.py took 0.229 seconds
+[2026-02-10T21:09:17.709+0000] {processor.py:161} INFO - Started process (PID=501) to work on /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:09:17.712+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/evidently_reporting_pipeline.py for tasks to queue
+[2026-02-10T21:09:17.713+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:09:17.713+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:09:17.893+0000] {processor.py:840} INFO - DAG(s) 'evidently_reporting_pipeline' retrieved from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:09:17.910+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:09:17.910+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2026-02-10T21:09:17.917+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:09:17.917+0000] {dag.py:3954} INFO - Setting next_dagrun for evidently_reporting_pipeline to 2026-02-10 12:00:00+00:00, run_after=2026-02-10 18:00:00+00:00
+[2026-02-10T21:09:17.923+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/evidently_reporting_pipeline.py took 0.218 seconds
+[2026-02-10T21:09:48.253+0000] {processor.py:161} INFO - Started process (PID=519) to work on /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:09:48.254+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/evidently_reporting_pipeline.py for tasks to queue
+[2026-02-10T21:09:48.256+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:09:48.255+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:09:48.484+0000] {processor.py:840} INFO - DAG(s) 'evidently_reporting_pipeline' retrieved from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:09:48.497+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:09:48.496+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2026-02-10T21:09:48.504+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:09:48.504+0000] {dag.py:3954} INFO - Setting next_dagrun for evidently_reporting_pipeline to 2026-02-10 12:00:00+00:00, run_after=2026-02-10 18:00:00+00:00
+[2026-02-10T21:09:48.509+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/evidently_reporting_pipeline.py took 0.261 seconds
+[2026-02-10T21:10:18.772+0000] {processor.py:161} INFO - Started process (PID=537) to work on /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:10:18.773+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/evidently_reporting_pipeline.py for tasks to queue
+[2026-02-10T21:10:18.775+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:10:18.774+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:10:19.029+0000] {processor.py:840} INFO - DAG(s) 'evidently_reporting_pipeline' retrieved from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:10:19.065+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:10:19.064+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2026-02-10T21:10:19.074+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:10:19.074+0000] {dag.py:3954} INFO - Setting next_dagrun for evidently_reporting_pipeline to 2026-02-10 12:00:00+00:00, run_after=2026-02-10 18:00:00+00:00
+[2026-02-10T21:10:19.079+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/evidently_reporting_pipeline.py took 0.313 seconds
+[2026-02-10T21:10:49.421+0000] {processor.py:161} INFO - Started process (PID=558) to work on /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:10:49.423+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/evidently_reporting_pipeline.py for tasks to queue
+[2026-02-10T21:10:49.425+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:10:49.425+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:10:49.991+0000] {processor.py:840} INFO - DAG(s) 'evidently_reporting_pipeline' retrieved from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:10:50.009+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:10:50.008+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2026-02-10T21:10:50.028+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:10:50.028+0000] {dag.py:3954} INFO - Setting next_dagrun for evidently_reporting_pipeline to 2026-02-10 12:00:00+00:00, run_after=2026-02-10 18:00:00+00:00
+[2026-02-10T21:10:50.037+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/evidently_reporting_pipeline.py took 0.633 seconds
+[2026-02-10T21:11:20.784+0000] {processor.py:161} INFO - Started process (PID=576) to work on /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:11:20.785+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/evidently_reporting_pipeline.py for tasks to queue
+[2026-02-10T21:11:20.787+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:11:20.787+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:11:21.025+0000] {processor.py:840} INFO - DAG(s) 'evidently_reporting_pipeline' retrieved from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:11:21.044+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:11:21.044+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2026-02-10T21:11:21.057+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:11:21.057+0000] {dag.py:3954} INFO - Setting next_dagrun for evidently_reporting_pipeline to 2026-02-10 12:00:00+00:00, run_after=2026-02-10 18:00:00+00:00
+[2026-02-10T21:11:21.066+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/evidently_reporting_pipeline.py took 0.291 seconds
+[2026-02-10T21:11:51.378+0000] {processor.py:161} INFO - Started process (PID=594) to work on /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:11:51.381+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/evidently_reporting_pipeline.py for tasks to queue
+[2026-02-10T21:11:51.385+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:11:51.385+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:11:51.694+0000] {processor.py:840} INFO - DAG(s) 'evidently_reporting_pipeline' retrieved from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:11:51.719+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:11:51.719+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2026-02-10T21:11:51.729+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:11:51.729+0000] {dag.py:3954} INFO - Setting next_dagrun for evidently_reporting_pipeline to 2026-02-10 12:00:00+00:00, run_after=2026-02-10 18:00:00+00:00
+[2026-02-10T21:11:51.735+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/evidently_reporting_pipeline.py took 0.367 seconds
+[2026-02-10T21:12:22.071+0000] {processor.py:161} INFO - Started process (PID=612) to work on /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:12:22.072+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/evidently_reporting_pipeline.py for tasks to queue
+[2026-02-10T21:12:22.074+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:12:22.073+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:12:22.285+0000] {processor.py:840} INFO - DAG(s) 'evidently_reporting_pipeline' retrieved from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:12:22.296+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:12:22.295+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2026-02-10T21:12:22.303+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:12:22.303+0000] {dag.py:3954} INFO - Setting next_dagrun for evidently_reporting_pipeline to 2026-02-10 12:00:00+00:00, run_after=2026-02-10 18:00:00+00:00
+[2026-02-10T21:12:22.308+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/evidently_reporting_pipeline.py took 0.245 seconds
+[2026-02-10T21:12:52.403+0000] {processor.py:161} INFO - Started process (PID=630) to work on /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:12:52.404+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/evidently_reporting_pipeline.py for tasks to queue
+[2026-02-10T21:12:52.405+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:12:52.405+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:12:52.663+0000] {processor.py:840} INFO - DAG(s) 'evidently_reporting_pipeline' retrieved from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:12:52.701+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:12:52.701+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2026-02-10T21:12:52.714+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:12:52.714+0000] {dag.py:3954} INFO - Setting next_dagrun for evidently_reporting_pipeline to 2026-02-10 12:00:00+00:00, run_after=2026-02-10 18:00:00+00:00
+[2026-02-10T21:12:52.727+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/evidently_reporting_pipeline.py took 0.330 seconds
+[2026-02-10T21:13:22.758+0000] {processor.py:161} INFO - Started process (PID=648) to work on /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:13:22.759+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/evidently_reporting_pipeline.py for tasks to queue
+[2026-02-10T21:13:22.760+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:13:22.759+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:13:22.984+0000] {processor.py:840} INFO - DAG(s) 'evidently_reporting_pipeline' retrieved from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:13:22.997+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:13:22.997+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2026-02-10T21:13:23.007+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:13:23.007+0000] {dag.py:3954} INFO - Setting next_dagrun for evidently_reporting_pipeline to 2026-02-10 12:00:00+00:00, run_after=2026-02-10 18:00:00+00:00
+[2026-02-10T21:13:23.015+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/evidently_reporting_pipeline.py took 0.261 seconds
+[2026-02-10T21:13:53.297+0000] {processor.py:161} INFO - Started process (PID=666) to work on /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:13:53.299+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/evidently_reporting_pipeline.py for tasks to queue
+[2026-02-10T21:13:53.300+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:13:53.300+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:13:53.537+0000] {processor.py:840} INFO - DAG(s) 'evidently_reporting_pipeline' retrieved from /opt/airflow/dags/evidently_reporting_pipeline.py
+[2026-02-10T21:13:53.549+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:13:53.549+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2026-02-10T21:13:53.559+0000] {logging_mixin.py:188} INFO - [2026-02-10T21:13:53.559+0000] {dag.py:3954} INFO - Setting next_dagrun for evidently_reporting_pipeline to 2026-02-10 12:00:00+00:00, run_after=2026-02-10 18:00:00+00:00
+[2026-02-10T21:13:53.568+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/evidently_reporting_pipeline.py took 0.276 seconds

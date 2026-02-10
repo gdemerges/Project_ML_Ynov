@@ -32,7 +32,36 @@ retrain_lock = threading.Lock()
 app = FastAPI(
     title="Student Depression Prediction API",
     version="1.0.0",
+    description="API de prédiction du risque de dépression chez les étudiants avec auto-retraining",
 )
+
+
+# =============================================================================
+# ROOT ENDPOINT
+# =============================================================================
+
+@app.get("/")
+async def root():
+    """Page d'accueil de l'API avec les endpoints disponibles"""
+    return {
+        "name": "MindPulse API",
+        "version": "1.0.0",
+        "status": "running",
+        "endpoints": {
+            "health": "/health - Vérifier l'état de l'API et du modèle",
+            "predict": "/predict - Faire une prédiction (POST)",
+            "feedback": "/feedback - Envoyer un feedback utilisateur (POST)",
+            "retrain": "/retrain - Déclencher manuellement le réentraînement (POST)",
+            "feature_names": "/feature-names - Liste des features attendues (GET)",
+            "docs": "/docs - Documentation interactive Swagger UI",
+            "redoc": "/redoc - Documentation alternative ReDoc"
+        },
+        "documentation": {
+            "swagger_ui": "/docs",
+            "redoc": "/redoc",
+            "openapi_json": "/openapi.json"
+        }
+    }
 
 
 # =============================================================================

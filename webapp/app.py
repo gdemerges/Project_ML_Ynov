@@ -342,24 +342,46 @@ DEPT_MAP = {"Science": "Science", "Ingénierie": "Engineering", "Médecine": "Me
 # ---------------------------------------------------------------------------
 if st.session_state.step == "form":
     current_step_index = st.session_state.form_step
-    total_steps = len(FORM_STEPS)
+    total_steps = len(FORM_STEPS) + 1  # +1 for review step
 
-    # Progress bar or step indicator is removed.
+    # Ensure form_step is within valid range
+    if current_step_index < 0:
+        st.session_state.form_step = 0
+        current_step_index = 0
+    elif current_step_index > total_steps - 1:
+        st.session_state.form_step = total_steps - 1
+        current_step_index = total_steps - 1
+
+    # Progress indicator
+    st.markdown(f"""
+    <div style="text-align: center; margin-bottom: 2rem;">
+        <div style="color: rgba(255,255,255,0.9); font-size: 0.9rem; font-weight: 500;">
+            Étape {current_step_index + 1} sur {total_steps}
+        </div>
+        <div style="background: rgba(255,255,255,0.2); height: 4px; border-radius: 2px; margin: 0.5rem auto; max-width: 200px; overflow: hidden;">
+            <div style="background: linear-gradient(90deg, #667eea, #764ba2); height: 100%; width: {((current_step_index + 1) / total_steps) * 100}%; transition: width 0.3s ease;"></div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
     # Navigation functions
     def next_step():
-        st.session_state.form_step += 1
+        if st.session_state.form_step < total_steps - 1:
+            st.session_state.form_step += 1
         st.rerun()
 
     def prev_step():
-        st.session_state.form_step -= 1
+        if st.session_state.form_step > 0:
+            st.session_state.form_step -= 1
         st.rerun()
 
-    if current_step_index < total_steps:
+    if current_step_index < len(FORM_STEPS):
         # Render current step
         current_step = FORM_STEPS[current_step_index]
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-        # The section title for each step is removed as per user request.
+
+        # Add section title
+        st.markdown(f'<div class="section-title">📋 {current_step["title"]}</div>', unsafe_allow_html=True)
 
         with st.form(f"step_form_{current_step_index}", clear_on_submit=False):
             # Input fields for the current step
@@ -435,26 +457,36 @@ if st.session_state.step == "form":
     else:
         # Review and Submit Step
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-        # The section title for the review step is removed as per user request.
-        st.write("Veuillez vérifier les informations saisies :")
 
-        display_data = {
-            "Âge": st.session_state.form_data.get("age"),
-            "Genre": st.session_state.form_data.get("gender"),
-            "Département": st.session_state.form_data.get("department"),
-            "CGPA": st.session_state.form_data.get("cgpa"),
-            "Heures d'étude (par jour)": st.session_state.form_data.get("study"),
-            "Durée du sommeil (heures/jour)": st.session_state.form_data.get("sleep"),
-            "Temps sur les réseaux sociaux (heures/jour)": st.session_state.form_data.get("social"),
-            "Activité physique (min/semaine)": st.session_state.form_data.get("physical"),
-            "Niveau de stress (1-10)": st.session_state.form_data.get("stress"),
-        }
-        
-        # Display data in a structured, readable format
-        st.markdown("### 📝 Résumé de votre profil")
+        # Add section title for review step
+        st.markdown('<div class="section-title">✅ Révision et Validation</div>', unsafe_allow_html=True)
+        st.write("Veuillez vérifier les informations saisies avant de soumettre :")
+
+        # Display data in a structured, readable format by category
         st.markdown('<div style="margin: 1rem 0;">', unsafe_allow_html=True)
-        for key, value in display_data.items():
-            st.write(f"**{key}:** {value}")
+
+        # Demographic info
+        st.markdown("**👤 Informations Démographiques**")
+        st.write(f"• Genre: {st.session_state.form_data.get('gender', 'Non renseigné')}")
+        st.write(f"• Âge: {st.session_state.form_data.get('age', 'Non renseigné')} ans")
+        st.write(f"• Département: {st.session_state.form_data.get('department', 'Non renseigné')}")
+
+        st.markdown("<br>", unsafe_allow_html=True)
+
+        # Academic info
+        st.markdown("**📚 Profil Académique**")
+        st.write(f"• CGPA: {st.session_state.form_data.get('cgpa', 'Non renseigné')}/4.0")
+        st.write(f"• Heures d'étude par jour: {st.session_state.form_data.get('study', 'Non renseigné')}h")
+
+        st.markdown("<br>", unsafe_allow_html=True)
+
+        # Lifestyle info
+        st.markdown("**💪 Habitudes de Vie**")
+        st.write(f"• Durée du sommeil: {st.session_state.form_data.get('sleep', 'Non renseigné')}h/jour")
+        st.write(f"• Temps sur réseaux sociaux: {st.session_state.form_data.get('social', 'Non renseigné')}h/jour")
+        st.write(f"• Activité physique: {st.session_state.form_data.get('physical', 'Non renseigné')} min/semaine")
+        st.write(f"• Niveau de stress: {st.session_state.form_data.get('stress', 'Non renseigné')}/10")
+
         st.markdown('</div>', unsafe_allow_html=True)
 
 
@@ -634,6 +666,7 @@ elif st.session_state.step == "result":
     st.markdown('<div style="margin-top: 2rem;"></div>', unsafe_allow_html=True)
     if st.button("🔄 Nouvelle Évaluation", use_container_width=True):
         st.session_state.step = "form"
+        st.session_state.form_step = 0  # Reset to first step
         st.session_state.prediction = None
         st.session_state.form_data = {}
         st.session_state.api_payload = {}
