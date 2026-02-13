@@ -5,8 +5,8 @@ import requests
 # Config
 # ---------------------------------------------------------------------------
 st.set_page_config(
-    page_title="MindPulse - Risque de Dépression Étudiante",
-    page_icon="🧠",
+    page_title="MindPulse - Outil d'Aide au Diagnostic",
+    page_icon="🩺",
     layout="centered",
     initial_sidebar_state="collapsed",
 )
@@ -23,7 +23,7 @@ st.markdown("""
 
     /* --- Global --- */
     .stApp {
-        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        background: linear-gradient(160deg, #0f2027 0%, #203a43 40%, #2c5364 100%);
         font-family: 'Inter', sans-serif;
     }
 
@@ -34,8 +34,6 @@ st.markdown("""
         position: relative;
         z-index: 1;
     }
-
-
 
     /* --- Header --- */
     .hero {
@@ -54,140 +52,155 @@ st.markdown("""
     .hero-title {
         font-size: 2.5rem;
         font-weight: 700;
-        color: white;
+        color: #e0f7fa;
         margin-bottom: 0.5rem;
-        text-shadow: 0 2px 20px rgba(0,0,0,0.2);
+        text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+        letter-spacing: -0.5px;
     }
     .hero-subtitle {
-        font-size: 1.1rem;
-        color: rgba(255,255,255,0.85);
+        font-size: 1.05rem;
+        color: rgba(224,247,250,0.75);
         font-weight: 400;
     }
 
     /* --- Glass Card --- */
     .glass-card {
-        background: rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.08);
         backdrop-filter: blur(25px);
         -webkit-backdrop-filter: blur(25px);
-        border-radius: 28px;
+        border-radius: 20px;
         padding: 2.5rem;
-        border: 1px solid rgba(255, 255, 255, 0.25);
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
         margin-bottom: 2rem;
         position: relative;
         overflow: hidden;
-    }
-
-    .glass-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-        transition: left 0.5s;
-    }
-
-    .glass-card:hover::before {
-        left: 100%;
     }
 
     /* --- Section Titles --- */
     .section-title {
         font-size: 1.3rem;
         font-weight: 600;
-        color: white;
+        color: #e0f7fa;
         margin-bottom: 1.5rem;
         display: flex;
         align-items: center;
         gap: 0.5rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid rgba(224,247,250,0.15);
     }
 
-    /* --- Form Inputs --- */
+    /* --- ALL Form Inputs - universal fix --- */
+    /* Labels */
     .stNumberInput label, .stSelectbox label, .stSlider label {
-        color: rgba(255,255,255,0.95) !important;
+        color: #e0f7fa !important;
         font-weight: 500 !important;
         font-size: 0.95rem !important;
     }
 
-    .stNumberInput input, .stSelectbox > div > div {
-        background: rgba(255,255,255,0.15) !important;
-        border: 1px solid rgba(255,255,255,0.3) !important;
-        border-radius: 12px !important;
-        color: white !important;
-        font-weight: 500;
+    /* Number inputs */
+    .stNumberInput input {
+        background: rgba(255,255,255,0.1) !important;
+        border: 1px solid rgba(224,247,250,0.25) !important;
+        border-radius: 10px !important;
+        color: #ffffff !important;
+        font-weight: 500 !important;
+        caret-color: #4dd0e1 !important;
+    }
+    .stNumberInput input:focus {
+        border-color: #4dd0e1 !important;
+        box-shadow: 0 0 0 2px rgba(77,208,225,0.2) !important;
     }
 
-    .stSlider > div > div > div {
-        background: rgba(255,255,255,0.3) !important;
+    /* Number input +/- buttons */
+    .stNumberInput button {
+        color: #e0f7fa !important;
+        border-color: rgba(224,247,250,0.25) !important;
+        background: rgba(255,255,255,0.08) !important;
+    }
+    .stNumberInput button:hover {
+        background: rgba(77,208,225,0.2) !important;
+        border-color: #4dd0e1 !important;
     }
 
-    .stSlider > div > div > div > div {
-        background: white !important;
+    /* Selectbox */
+    .stSelectbox > div > div {
+        background: rgba(255,255,255,0.1) !important;
+        border: 1px solid rgba(224,247,250,0.25) !important;
+        border-radius: 10px !important;
+        color: #ffffff !important;
+    }
+    .stSelectbox [data-baseweb="select"] span {
+        color: #ffffff !important;
+    }
+
+    /* Slider track */
+    .stSlider [data-baseweb="slider"] > div > div {
+        background: rgba(224,247,250,0.2) !important;
+    }
+    /* Slider filled track */
+    .stSlider [data-baseweb="slider"] > div > div > div {
+        background: linear-gradient(90deg, #26c6da, #4dd0e1) !important;
+    }
+    /* Slider thumb */
+    .stSlider [data-baseweb="slider"] [role="slider"] {
+        background: #e0f7fa !important;
+        border-color: #4dd0e1 !important;
+        box-shadow: 0 2px 8px rgba(77,208,225,0.4) !important;
+    }
+    /* Slider value label */
+    .stSlider [data-testid="stTickBarMin"],
+    .stSlider [data-testid="stTickBarMax"],
+    .stSlider > div > div > div > div > div {
+        color: rgba(224,247,250,0.8) !important;
     }
 
     /* --- Buttons --- */
-    .stButton > button {
+    .stButton > button,
+    .stFormSubmitButton > button {
         width: 100%;
-        background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%) !important;
-        color: #667eea !important;
+        background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%) !important;
+        color: #0f2027 !important;
         border: none !important;
-        border-radius: 16px !important;
-        padding: 1rem 2rem !important;
-        font-size: 1.1rem !important;
+        border-radius: 12px !important;
+        padding: 0.85rem 2rem !important;
+        font-size: 1rem !important;
         font-weight: 600 !important;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2),
-                    inset 0 1px 0 rgba(255,255,255,0.8) !important;
-        position: relative;
-        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
+        letter-spacing: 0.2px;
     }
 
-    .stButton > button::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(102,126,234,0.2), transparent);
-        transition: left 0.5s;
+    .stButton > button:hover,
+    .stFormSubmitButton > button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 24px rgba(77,208,225,0.3) !important;
+        background: linear-gradient(135deg, #b2ebf2 0%, #80deea 100%) !important;
     }
 
-    .stButton > button:hover::before {
-        left: 100%;
-    }
-
-    .stButton > button:hover {
-        transform: translateY(-3px) scale(1.02);
-        box-shadow: 0 8px 30px rgba(0,0,0,0.3) !important;
-    }
-
-    .stButton > button:active {
-        transform: translateY(-1px) scale(0.98);
+    .stButton > button:active,
+    .stFormSubmitButton > button:active {
+        transform: translateY(0px);
     }
 
     /* --- Result Cards --- */
     .result-card {
-        background: rgba(255,255,255,0.15);
         backdrop-filter: blur(20px);
         border-radius: 20px;
-        padding: 2rem;
+        padding: 2.5rem 2rem;
         text-align: center;
         border: 2px solid;
         margin: 2rem 0;
     }
 
     .result-positive {
-        border-color: rgba(239, 68, 68, 0.5);
-        background: linear-gradient(135deg, rgba(239,68,68,0.15), rgba(220,38,38,0.1));
+        border-color: rgba(239, 83, 80, 0.6);
+        background: linear-gradient(135deg, rgba(239,83,80,0.12), rgba(198,40,40,0.08));
     }
 
     .result-negative {
-        border-color: rgba(34, 197, 94, 0.5);
-        background: linear-gradient(135deg, rgba(34,197,94,0.15), rgba(22,163,74,0.1));
+        border-color: rgba(77, 208, 225, 0.6);
+        background: linear-gradient(135deg, rgba(77,208,225,0.12), rgba(38,166,154,0.08));
     }
 
     .result-icon {
@@ -198,73 +211,94 @@ st.markdown("""
     .result-title {
         font-size: 1.8rem;
         font-weight: 700;
-        color: white;
+        color: #e0f7fa;
         margin-bottom: 0.5rem;
     }
 
     .result-desc {
         font-size: 1rem;
-        color: rgba(255,255,255,0.9);
+        color: rgba(224,247,250,0.85);
+        line-height: 1.7;
+    }
+
+    /* --- Review Data --- */
+    .review-section {
+        background: rgba(255,255,255,0.06);
+        border-radius: 12px;
+        padding: 1.2rem 1.5rem;
+        margin-bottom: 1rem;
+        border-left: 3px solid rgba(77,208,225,0.5);
+    }
+    .review-section h4 {
+        color: #4dd0e1 !important;
+        margin: 0 0 0.6rem 0;
+        font-size: 1rem;
+        font-weight: 600;
+    }
+    .review-item {
+        color: #e0f7fa;
+        font-size: 0.95rem;
+        padding: 0.2rem 0;
         line-height: 1.6;
+    }
+    .review-item span {
+        color: rgba(224,247,250,0.6);
     }
 
     /* --- Feedback Section --- */
     .feedback-box {
-        background: rgba(255,255,255,0.08);
+        background: rgba(255,255,255,0.06);
         border-radius: 16px;
         padding: 1.5rem;
         margin-top: 2rem;
-        border: 1px solid rgba(255,255,255,0.15);
+        border: 1px solid rgba(224,247,250,0.12);
     }
 
     .feedback-title {
         font-size: 1.1rem;
         font-weight: 600;
-        color: white;
+        color: #e0f7fa;
         margin-bottom: 1rem;
     }
 
     /* --- Info Box --- */
     .info-box {
-        background: rgba(255,255,255,0.1);
+        background: rgba(77,208,225,0.08);
         border-radius: 12px;
         padding: 1rem 1.5rem;
         margin: 1rem 0;
-        border-left: 4px solid rgba(255,255,255,0.5);
+        border-left: 4px solid rgba(77,208,225,0.5);
     }
 
     .info-box p {
-        color: rgba(255,255,255,0.95) !important;
+        color: rgba(224,247,250,0.9) !important;
         margin: 0 !important;
-        font-size: 0.95rem;
-    }
-
-    /* --- Divider --- */
-    .divider {
-        height: 1px;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-        margin: 2rem 0;
+        font-size: 0.9rem;
+        line-height: 1.5;
     }
 
     /* --- Footer --- */
     .footer {
         text-align: center;
         padding: 2rem 0 1rem;
-        color: rgba(255,255,255,0.7);
+        color: rgba(224,247,250,0.5);
         font-size: 0.85rem;
     }
 
     /* --- Success/Error messages --- */
     .stAlert {
-        background: rgba(255,255,255,0.15) !important;
+        background: rgba(255,255,255,0.1) !important;
         border-radius: 12px !important;
-        border: 1px solid rgba(255,255,255,0.2) !important;
+        border: 1px solid rgba(224,247,250,0.15) !important;
     }
 
-
-
-
-
+    /* --- Streamlit text elements --- */
+    .stMarkdown p, .stMarkdown li {
+        color: #e0f7fa !important;
+    }
+    .stMarkdown strong {
+        color: #ffffff !important;
+    }
 
     /* --- Clean form styling --- */
     .stForm {
@@ -273,13 +307,11 @@ st.markdown("""
         background: transparent !important;
     }
 
-    /* Remove borders from forms */
     section[data-testid="stForm"] {
         border: none !important;
         background: transparent !important;
     }
 
-    /* Target ONLY the horizontal divider, not form buttons */
     .stMarkdown > hr,
     .element-container > hr {
         border: none !important;
@@ -289,13 +321,11 @@ st.markdown("""
         visibility: hidden !important;
     }
 
-    /* Hide specific empty Streamlit containers that appear after progress bar */
     [data-testid="column"] > div:empty,
     .element-container:empty,
     .row-widget:empty {
         display: none !important;
     }
-
 
 </style>
 """, unsafe_allow_html=True)
@@ -305,9 +335,9 @@ st.markdown("""
 # ---------------------------------------------------------------------------
 st.markdown("""
 <div class="hero">
-    <div class="hero-icon">🧠</div>
+    <div class="hero-icon">🩺</div>
     <div class="hero-title">MindPulse</div>
-    <div class="hero-subtitle">Évaluation du risque de dépression chez les étudiants</div>
+    <div class="hero-subtitle">Outil d'aide au diagnostic - Évaluation du risque de dépression</div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -327,9 +357,9 @@ if "api_payload" not in st.session_state:
 
 # Define form steps and their fields
 FORM_STEPS = [
-    {"title": "Informations Démographiques", "fields": ["gender", "age", "department"]},
-    {"title": "Profil Académique", "fields": ["cgpa", "study"]},
-    {"title": "Habitudes de Vie", "fields": ["sleep", "social", "physical", "stress"]},
+    {"title": "Informations du Patient", "fields": ["gender", "age", "department"]},
+    {"title": "Parcours Académique", "fields": ["cgpa", "study"]},
+    {"title": "Mode de Vie du Patient", "fields": ["sleep", "social", "physical", "stress"]},
 ]
 
 # Mapping FR -> EN for the ML model
@@ -355,11 +385,11 @@ if st.session_state.step == "form":
     # Progress indicator
     st.markdown(f"""
     <div style="text-align: center; margin-bottom: 2rem;">
-        <div style="color: rgba(255,255,255,0.9); font-size: 0.9rem; font-weight: 500;">
+        <div style="color: rgba(224,247,250,0.8); font-size: 0.9rem; font-weight: 500;">
             Étape {current_step_index + 1} sur {total_steps}
         </div>
-        <div style="background: rgba(255,255,255,0.2); height: 4px; border-radius: 2px; margin: 0.5rem auto; max-width: 200px; overflow: hidden;">
-            <div style="background: linear-gradient(90deg, #667eea, #764ba2); height: 100%; width: {((current_step_index + 1) / total_steps) * 100}%; transition: width 0.3s ease;"></div>
+        <div style="background: rgba(224,247,250,0.15); height: 4px; border-radius: 2px; margin: 0.5rem auto; max-width: 200px; overflow: hidden;">
+            <div style="background: linear-gradient(90deg, #26c6da, #4dd0e1); height: 100%; width: {((current_step_index + 1) / total_steps) * 100}%; transition: width 0.3s ease;"></div>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -388,56 +418,56 @@ if st.session_state.step == "form":
             for field_key in current_step["fields"]:
                 if field_key == "gender":
                     st.session_state.form_data[field_key] = st.selectbox(
-                        "Genre", ["Homme", "Femme"],
+                        "Genre du patient", ["Homme", "Femme"],
                         index=["Homme", "Femme"].index(st.session_state.form_data.get(field_key, "Homme")),
                         key=f"{field_key}_{current_step_index}"
                     )
                 elif field_key == "age":
-                    st.session_state.form_data[field_key] = st.number_input(
-                        "Âge", min_value=16, max_value=60,
+                    st.session_state.form_data[field_key] = st.slider(
+                        "Quel âge a le patient ?", 16, 60,
                         value=st.session_state.form_data.get(field_key, 22),
-                        key=f"{field_key}_{current_step_index}"
+                        step=1, key=f"{field_key}_{current_step_index}"
                     )
                 elif field_key == "department":
                     departments = ["Science", "Ingénierie", "Médecine", "Arts", "Affaires"]
                     st.session_state.form_data[field_key] = st.selectbox(
-                        "Département", departments,
+                        "Dans quel département étudie le patient ?", departments,
                         index=departments.index(st.session_state.form_data.get(field_key, "Science")),
                         key=f"{field_key}_{current_step_index}"
                     )
                 elif field_key == "cgpa":
-                    st.session_state.form_data[field_key] = st.number_input(
-                        "CGPA", min_value=0.0, max_value=4.0,
+                    st.session_state.form_data[field_key] = st.slider(
+                        "Quelle est sa moyenne générale (CGPA) ?", 0.0, 4.0,
                         value=st.session_state.form_data.get(field_key, 3.0),
                         step=0.1, key=f"{field_key}_{current_step_index}"
                     )
                 elif field_key == "study":
-                    st.session_state.form_data[field_key] = st.number_input(
-                        "Heures d'étude (par jour)", min_value=0.0, max_value=16.0,
+                    st.session_state.form_data[field_key] = st.slider(
+                        "Combien d'heures par jour étudie-t-il/elle ?", 0.0, 16.0,
                         value=st.session_state.form_data.get(field_key, 4.0),
                         step=0.5, key=f"{field_key}_{current_step_index}"
                     )
                 elif field_key == "sleep":
                     st.session_state.form_data[field_key] = st.slider(
-                        "Durée du sommeil (heures/jour)", 0.0, 12.0,
+                        "Combien d'heures dort le patient par nuit ?", 0.0, 12.0,
                         value=st.session_state.form_data.get(field_key, 7.0),
                         step=0.5, key=f"{field_key}_{current_step_index}"
                     )
                 elif field_key == "social":
                     st.session_state.form_data[field_key] = st.slider(
-                        "Temps sur les réseaux sociaux (heures/jour)", 0.0, 16.0,
+                        "Temps passé sur les réseaux sociaux (h/jour) ?", 0.0, 16.0,
                         value=st.session_state.form_data.get(field_key, 3.0),
                         step=0.5, key=f"{field_key}_{current_step_index}"
                     )
                 elif field_key == "physical":
                     st.session_state.form_data[field_key] = st.slider(
-                        "Activité physique (min/semaine)", 0, 500,
+                        "Activité physique hebdomadaire du patient (min/semaine) ?", 0, 500,
                         value=st.session_state.form_data.get(field_key, 120),
                         step=10, key=f"{field_key}_{current_step_index}"
                     )
                 elif field_key == "stress":
                     st.session_state.form_data[field_key] = st.slider(
-                        "Niveau de stress (1-10)", 1, 10,
+                        "Niveau de stress ressenti par le patient (1-10) ?", 1, 10,
                         value=st.session_state.form_data.get(field_key, 5),
                         step=1, key=f"{field_key}_{current_step_index}"
                     )
@@ -459,35 +489,30 @@ if st.session_state.step == "form":
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
 
         # Add section title for review step
-        st.markdown('<div class="section-title">✅ Révision et Validation</div>', unsafe_allow_html=True)
-        st.write("Veuillez vérifier les informations saisies avant de soumettre :")
+        st.markdown('<div class="section-title">✅ Récapitulatif du Patient</div>', unsafe_allow_html=True)
 
-        # Display data in a structured, readable format by category
-        st.markdown('<div style="margin: 1rem 0;">', unsafe_allow_html=True)
+        fd = st.session_state.form_data
 
-        # Demographic info
-        st.markdown("**👤 Informations Démographiques**")
-        st.write(f"• Genre: {st.session_state.form_data.get('gender', 'Non renseigné')}")
-        st.write(f"• Âge: {st.session_state.form_data.get('age', 'Non renseigné')} ans")
-        st.write(f"• Département: {st.session_state.form_data.get('department', 'Non renseigné')}")
-
-        st.markdown("<br>", unsafe_allow_html=True)
-
-        # Academic info
-        st.markdown("**📚 Profil Académique**")
-        st.write(f"• CGPA: {st.session_state.form_data.get('cgpa', 'Non renseigné')}/4.0")
-        st.write(f"• Heures d'étude par jour: {st.session_state.form_data.get('study', 'Non renseigné')}h")
-
-        st.markdown("<br>", unsafe_allow_html=True)
-
-        # Lifestyle info
-        st.markdown("**💪 Habitudes de Vie**")
-        st.write(f"• Durée du sommeil: {st.session_state.form_data.get('sleep', 'Non renseigné')}h/jour")
-        st.write(f"• Temps sur réseaux sociaux: {st.session_state.form_data.get('social', 'Non renseigné')}h/jour")
-        st.write(f"• Activité physique: {st.session_state.form_data.get('physical', 'Non renseigné')} min/semaine")
-        st.write(f"• Niveau de stress: {st.session_state.form_data.get('stress', 'Non renseigné')}/10")
-
-        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown(f"""
+        <div class="review-section">
+            <h4>👤 Informations du Patient</h4>
+            <div class="review-item"><span>Genre :</span> {fd.get('gender', 'Non renseigné')}</div>
+            <div class="review-item"><span>Âge :</span> {fd.get('age', 'Non renseigné')} ans</div>
+            <div class="review-item"><span>Département :</span> {fd.get('department', 'Non renseigné')}</div>
+        </div>
+        <div class="review-section">
+            <h4>📚 Parcours Académique</h4>
+            <div class="review-item"><span>CGPA :</span> {fd.get('cgpa', 'Non renseigné')} / 4.0</div>
+            <div class="review-item"><span>Heures d'étude / jour :</span> {fd.get('study', 'Non renseigné')}h</div>
+        </div>
+        <div class="review-section">
+            <h4>💪 Mode de Vie</h4>
+            <div class="review-item"><span>Sommeil :</span> {fd.get('sleep', 'Non renseigné')}h / nuit</div>
+            <div class="review-item"><span>Réseaux sociaux :</span> {fd.get('social', 'Non renseigné')}h / jour</div>
+            <div class="review-item"><span>Activité physique :</span> {fd.get('physical', 'Non renseigné')} min / semaine</div>
+            <div class="review-item"><span>Stress :</span> {fd.get('stress', 'Non renseigné')} / 10</div>
+        </div>
+        """, unsafe_allow_html=True)
 
 
         col_nav1, col_nav2 = st.columns(2)
@@ -495,7 +520,7 @@ if st.session_state.step == "form":
             if st.button("⬅️ Précédent", key="review_prev", use_container_width=True):
                 prev_step()
         with col_nav2:
-            if st.button("🔮 Obtenir la Prédiction", key="get_prediction", use_container_width=True):
+            if st.button("🔮 Lancer l'Analyse", key="get_prediction", use_container_width=True):
                 # Prepare data for API call from session_state
                 form_data_for_api = {
                     "Age": st.session_state.form_data.get("age"),
@@ -510,7 +535,7 @@ if st.session_state.step == "form":
                 }
 
                 # Call API
-                with st.spinner("🔄 Analyse de votre profil..."):
+                with st.spinner("🔄 Analyse du profil du patient..."):
                     try:
                         payload = {"features": form_data_for_api}
                         response = requests.post(
@@ -542,8 +567,8 @@ if st.session_state.step == "form":
     st.markdown("""
     <div class="info-box">
         <p>
-            <strong>ℹ️ Avis de Confidentialité :</strong> Ceci est un modèle ML éducatif à des fins de démonstration.
-            Ne remplace pas un avis médical professionnel. Toutes les données sont traitées localement.
+            <strong>ℹ️ Note :</strong> Cet outil d'aide au diagnostic repose sur un modèle de Machine Learning.
+            Il ne se substitue pas au jugement clinique du praticien. Les données sont traitées localement.
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -564,76 +589,50 @@ elif st.session_state.step == "result":
         st.markdown(f"""
         <div class="result-card result-positive">
             <div class="result-icon">⚠️</div>
-            <div class="result-title">Risque Détecté</div>
+            <div class="result-title">Risque de Dépression Détecté</div>
             <div class="result-desc">
-                Le modèle indique un risque potentiel de dépression basé sur votre profil.
-                Nous vous recommandons de contacter des services de soutien en santé mentale.
+                Le modèle indique un risque potentiel de dépression pour ce patient.
+                Une évaluation clinique approfondie est recommandée.
             </div>
         </div>
         """, unsafe_allow_html=True)
+
+        # Recommendations for at-risk patients
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        st.markdown('<div class="section-title">📋 Prescriptions Recommandées</div>', unsafe_allow_html=True)
+        st.markdown("""
+        Voici les recommandations à transmettre au patient pour améliorer son bien-être :
+
+        - **🎬 Faire un marathon Le Seigneur des Anneaux** - Thérapie cinématographique immersive (durée : 11h34 version longue)
+        - **🍰 Manger des pâtisseries** - Augmentation du taux de sérotonine par voie gustative
+        - **🥾 Randonner** - Sylvothérapie et reconnexion avec la nature
+        - **🤘 Pogoter** - Libération d'endorphines par expression corporelle intensive
+        - **✊ Détruire le capitalisme** - Traitement de fond pour éradiquer la cause structurelle du mal-être
+        """)
+        st.markdown('</div>', unsafe_allow_html=True)
+
     else:
         st.markdown(f"""
         <div class="result-card result-negative">
             <div class="result-icon">✅</div>
-            <div class="result-title">Pas de risque significatif</div>
+            <div class="result-title">Pas de Risque Significatif</div>
             <div class="result-desc">
-                Basé sur votre profil, le modèle n'indique pas de risque significatif de dépression.
-                Continuez à maintenir vos saines habitudes de vie.
+                Le modèle n'indique pas de risque significatif de dépression pour ce patient.
+                Le patient semble maintenir un bon équilibre de vie.
             </div>
         </div>
         """, unsafe_allow_html=True)
 
-    # Recommendations
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-    st.markdown('<div class="section-title">💡 Recommandations</div>', unsafe_allow_html=True)
-
-    col1, col2 = st.columns(2)
-
-    with col1:
-        st.markdown("**📞 Ressources de Soutien (France)**")
-        st.markdown("""
-        - **3114** - Numéro national de prévention du suicide
-        - **SOS Amitié** - 09 72 39 40 50
-        - **Fil Santé Jeunes** - 0 800 235 236
-        - **Nightline** - Service d'écoute étudiant
-        """)
-
-    with col2:
-        st.markdown("**🎯 Conseils Personnalisés**")
-        tips = []
-
-        if form_data["Stress_Level"] >= 7:
-            tips.append("- Pratiquer la gestion du stress (méditation, respiration)")
-        if form_data["Sleep_Duration"] < 6:
-            tips.append("- Viser 7 à 9 heures de sommeil par nuit")
-        if form_data["Physical_Activity"] < 60:
-            tips.append("- Augmenter l'activité physique (150+ min/semaine)")
-        if form_data["Social_Media_Hours"] > 5:
-            tips.append("- Réduire le temps d'écran et les réseaux sociaux")
-        if form_data["Study_Hours"] > 10:
-            tips.append("- Équilibrer le temps d'étude avec des pauses")
-
-        if not tips:
-            tips = [
-                "- Maintenir de saines habitudes",
-                "- Rester connecté avec vos amis et votre famille",
-                "- Maintenir l'équilibre vie pro/perso"
-            ]
-
-        st.markdown("\n".join(tips))
-
-    st.markdown('</div>', unsafe_allow_html=True)
-
     # Feedback section
     st.markdown('<div class="feedback-box">', unsafe_allow_html=True)
-    st.markdown('<div class="feedback-title">📊 Aidez-nous à Améliorer Notre Modèle</div>', unsafe_allow_html=True)
-    st.markdown("Votre retour aide à améliorer la précision du modèle au fil du temps.")
+    st.markdown('<div class="feedback-title">📊 Retour Clinique</div>', unsafe_allow_html=True)
+    st.markdown("Votre diagnostic clinique permet d'améliorer la précision du modèle.")
 
     feedback_col1, feedback_col2 = st.columns([3, 1])
 
     with feedback_col1:
         actual_status = st.selectbox(
-            "Souffrez-vous réellement de symptômes de dépression ?",
+            "Le patient présente-t-il effectivement des symptômes de dépression ?",
             ["Non", "Oui"],
             key="feedback_actual"
         )
@@ -641,7 +640,7 @@ elif st.session_state.step == "result":
     with feedback_col2:
         st.write("")  # Spacing
         st.write("")
-        if st.button("Envoyer le Retour", use_container_width=True):
+        if st.button("Envoyer le Diagnostic", use_container_width=True):
             feedback_payload = {
                 "features": form_data,
                 "prediction": int(prediction),
@@ -652,7 +651,7 @@ elif st.session_state.step == "result":
                 fb_response = requests.post(FEEDBACK_URL, json=feedback_payload, timeout=10)
                 if fb_response.status_code == 200:
                     result = fb_response.json()
-                    st.success(f"✅ Merci ! Retour enregistré (total: {result.get('total_feedbacks', 0)})")
+                    st.success(f"✅ Diagnostic enregistré (total: {result.get('total_feedbacks', 0)})")
                     if result.get("retrain_triggered"):
                         st.info("🔄 Ré-entraînement du modèle déclenché !")
                 else:
@@ -664,7 +663,7 @@ elif st.session_state.step == "result":
 
     # New assessment button
     st.markdown('<div style="margin-top: 2rem;"></div>', unsafe_allow_html=True)
-    if st.button("🔄 Nouvelle Évaluation", use_container_width=True):
+    if st.button("🔄 Nouveau Patient", use_container_width=True):
         st.session_state.step = "form"
         st.session_state.form_step = 0  # Reset to first step
         st.session_state.prediction = None
@@ -677,7 +676,7 @@ elif st.session_state.step == "result":
 # ---------------------------------------------------------------------------
 st.markdown("""
 <div class="footer">
-    <strong>MindPulse</strong> &mdash; Projet ML Éducatif<br>
+    <strong>MindPulse</strong> &mdash; Outil d'Aide au Diagnostic<br>
     M1 DataEng &middot; Ynov Campus &middot; 2025-2026
 </div>
 """, unsafe_allow_html=True)
