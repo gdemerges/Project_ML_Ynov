@@ -77,16 +77,28 @@ st.markdown("""
         overflow: hidden;
     }
 
+    /* --- Section Title Card (standalone header) --- */
+    .section-title-card {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        border-radius: 16px;
+        padding: 1rem 1.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        margin-bottom: 1rem;
+    }
+
     /* --- Section Titles --- */
     .section-title {
         font-size: 1.3rem;
         font-weight: 600;
         color: #e0f7fa;
-        margin-bottom: 1.5rem;
+        margin: 0;
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        padding-bottom: 0.75rem;
+        padding-bottom: 0.5rem;
         border-bottom: 1px solid rgba(224,247,250,0.15);
     }
 
@@ -321,10 +333,40 @@ st.markdown("""
         visibility: hidden !important;
     }
 
+    /* Hide empty Streamlit containers */
     [data-testid="column"] > div:empty,
     .element-container:empty,
     .row-widget:empty {
         display: none !important;
+    }
+
+    /* AGGRESSIVE: Hide the mysterious empty block before forms */
+    div[data-testid="stVerticalBlock"] > div[data-testid="element-container"]:has(> div:empty) {
+        display: none !important;
+    }
+
+    /* Target the specific empty container that appears between markdown and forms */
+    .element-container:has(> div[data-testid="stVerticalBlock"] > div:empty),
+    div[data-testid="stVerticalBlock"]:has(> div:empty:only-child) {
+        display: none !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* Reduce all vertical gaps in the form section */
+    div[data-testid="stVerticalBlock"] > div:empty,
+    div[data-testid="stVerticalBlock"] > div > div:empty {
+        display: none !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* Force remove margin/padding from form containers */
+    section[data-testid="stForm"] {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
     }
 
 </style>
@@ -384,11 +426,11 @@ if st.session_state.step == "form":
 
     # Progress indicator
     st.markdown(f"""
-    <div style="text-align: center; margin-bottom: 2rem;">
+    <div style="text-align: center; margin-bottom: 0.5rem;">
         <div style="color: rgba(224,247,250,0.8); font-size: 0.9rem; font-weight: 500;">
             Étape {current_step_index + 1} sur {total_steps}
         </div>
-        <div style="background: rgba(224,247,250,0.15); height: 4px; border-radius: 2px; margin: 0.5rem auto; max-width: 200px; overflow: hidden;">
+        <div style="background: rgba(224,247,250,0.15); height: 4px; border-radius: 2px; margin: 0.5rem auto 0 auto; max-width: 200px; overflow: hidden;">
             <div style="background: linear-gradient(90deg, #26c6da, #4dd0e1); height: 100%; width: {((current_step_index + 1) / total_steps) * 100}%; transition: width 0.3s ease;"></div>
         </div>
     </div>
@@ -408,9 +450,8 @@ if st.session_state.step == "form":
     if current_step_index < len(FORM_STEPS):
         # Render current step
         current_step = FORM_STEPS[current_step_index]
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
 
-        # Add section title
+        # Add section title (glass-card styling applied via CSS on section-title's parent)
         st.markdown(f'<div class="section-title">📋 {current_step["title"]}</div>', unsafe_allow_html=True)
 
         with st.form(f"step_form_{current_step_index}", clear_on_submit=False):
@@ -484,12 +525,8 @@ if st.session_state.step == "form":
                 if st.form_submit_button("Suivant ➡️", use_container_width=True):
                     next_step()
 
-        st.markdown('</div>', unsafe_allow_html=True)
-
     else:
         # Review and Submit Step
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-
         # Add section title for review step
         st.markdown('<div class="section-title">✅ Récapitulatif du Patient</div>', unsafe_allow_html=True)
 
@@ -569,8 +606,6 @@ if st.session_state.step == "form":
                         st.error(f"❌ Impossible de joindre l'API. Veuillez vous assurer que le conteneur de service est en cours d'exécution.\n\nDétail: {e}")
                     except Exception as e:
                         st.error(f"❌ Erreur inattendue ({type(e).__name__}): {e}")
-
-        st.markdown('</div>', unsafe_allow_html=True)
 
     # Info box (retained at the bottom of the form section)
     st.markdown("""
