@@ -436,11 +436,13 @@ if st.session_state.step == "form":
                         key=f"{field_key}_{current_step_index}"
                     )
                 elif field_key == "cgpa":
-                    st.session_state.form_data[field_key] = st.slider(
-                        "Quelle est sa moyenne générale (CGPA) ?", 0.0, 4.0,
-                        value=st.session_state.form_data.get(field_key, 3.0),
-                        step=0.1, key=f"{field_key}_{current_step_index}"
+                    # Display as /20 but store as /4 for API compatibility
+                    cgpa_display = st.slider(
+                        "Quelle est sa moyenne générale (/20) ?", 0.0, 20.0,
+                        value=st.session_state.form_data.get(field_key, 3.0) * 5.0,  # Convert 4 scale to 20 scale for display
+                        step=0.5, key=f"{field_key}_{current_step_index}"
                     )
+                    st.session_state.form_data[field_key] = cgpa_display / 5.0  # Store as /4 for API
                 elif field_key == "study":
                     st.session_state.form_data[field_key] = st.slider(
                         "Combien d'heures par jour étudie-t-il/elle ?", 0.0, 16.0,
@@ -493,6 +495,13 @@ if st.session_state.step == "form":
 
         fd = st.session_state.form_data
 
+        # Convert CGPA back to /20 scale for display
+        cgpa_value = fd.get('cgpa', 'Non renseigné')
+        if cgpa_value != 'Non renseigné':
+            cgpa_display = f"{cgpa_value * 5.0:.1f} / 20"
+        else:
+            cgpa_display = 'Non renseigné'
+
         st.markdown(f"""
         <div class="review-section">
             <h4>👤 Informations du Patient</h4>
@@ -502,7 +511,7 @@ if st.session_state.step == "form":
         </div>
         <div class="review-section">
             <h4>📚 Parcours Académique</h4>
-            <div class="review-item"><span>CGPA :</span> {fd.get('cgpa', 'Non renseigné')} / 4.0</div>
+            <div class="review-item"><span>Moyenne générale :</span> {cgpa_display}</div>
             <div class="review-item"><span>Heures d'étude / jour :</span> {fd.get('study', 'Non renseigné')}h</div>
         </div>
         <div class="review-section">
