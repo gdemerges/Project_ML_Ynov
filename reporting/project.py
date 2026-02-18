@@ -42,11 +42,29 @@ def load_data():
     if "prediction" not in ref_data.columns:
         ref_data["prediction"] = ref_data["target"]
 
+    # Align types: target and prediction must be consistent (no mixed float/str)
+    for df in (ref_data, prod_data):
+        for col in ("target", "prediction"):
+            if col in df.columns:
+                numeric = pd.to_numeric(df[col], errors="coerce")
+                # Only apply numeric conversion if no values were lost
+                if numeric.notna().sum() == df[col].notna().sum():
+                    df[col] = numeric
+                else:
+                    df[col] = df[col].astype(str)
+    prod_data = prod_data.dropna(subset=["target", "prediction"])
+    ref_data = ref_data.dropna(subset=["target", "prediction"])
+
     return ref_data, prod_data
 
 
-def build_column_mapping(ref_data):
-    pca_cols = [c for c in ref_data.columns if c.startswith("PCA_")]
+def build_column_mapping(ref_data, prod_data):
+    ref_pca = set(c for c in ref_data.columns if c.startswith("PCA_"))
+    prod_pca = set(c for c in prod_data.columns if c.startswith("PCA_"))
+    pca_cols = sorted(ref_pca & prod_pca)
+
+    if ref_pca != prod_pca:
+        print(f"⚠️  PCA column mismatch — using intersection: {pca_cols}")
 
     column_mapping = ColumnMapping()
     column_mapping.target = "target"
@@ -110,7 +128,7 @@ if __name__ == "__main__":
     print(f"   Reference data shape: {ref_data.shape}")
     print(f"   Production data shape: {prod_data.shape}")
 
-    column_mapping = build_column_mapping(ref_data)
+    column_mapping = build_column_mapping(ref_data, prod_data)
 
     generate_reports(ref_data, prod_data, column_mapping)
 

@@ -1,4 +1,4 @@
-evidently
-pandas
-numpy
+evidently==0.4.30
+pandas<2.0
+numpy<2.0
 scikit-learn
