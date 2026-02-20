@@ -10,10 +10,11 @@ TRANSLATIONS = {
         "hero_subtitle": "Strumento di supporto alla diagnosi — Valutazione del rischio di depressione",
         "step_counter": "Fase {current} di {total}",
         "form_steps": [
-            {"title": "Informazioni del Paziente", "fields": ["gender", "age", "department"]},
+            {"title": "Informazioni del Paziente", "fields": ["name", "gender", "age", "department"]},
             {"title": "Percorso Accademico",        "fields": ["cgpa", "study"]},
             {"title": "Stile di Vita del Paziente", "fields": ["sleep", "social", "physical", "stress"]},
         ],
+        "name_label":     "Nome del paziente",
         "gender_label":   "Sesso del paziente",
         "gender_options": ["Uomo", "Donna"],
         "age_label":      "Quanti anni ha il paziente?",
@@ -32,6 +33,7 @@ TRANSLATIONS = {
         "review_patient_info": "👤 Informazioni del Paziente",
         "review_academic":     "📚 Percorso Accademico",
         "review_lifestyle":    "💪 Stile di Vita",
+        "lbl_name":          "Nome :",
         "lbl_gender":        "Sesso :",
         "lbl_age":           "Età :",
         "lbl_age_unit":      "anni",
@@ -72,6 +74,8 @@ TRANSLATIONS = {
         "feedback_success":  "✅ Diagnosi registrata (totale: {total})",
         "feedback_retrain":  "🔄 Riaddestramento del modello avviato!",
         "btn_new_patient":   "🔄 Nuovo Paziente",
+        "btn_download_csv":  "📥 Scarica CSV pazienti",
+        "csv_no_data":       "Nessun paziente nella cronologia.",
         "footer_subtitle":   "Strumento di Supporto alla Diagnosi",
         "info_note": "<strong>ℹ️ Nota :</strong> Questo strumento di supporto alla diagnosi si basa su un modello di Machine Learning. Non sostituisce il giudizio clinico del medico. I dati vengono elaborati localmente.",
         "lang_picker_label": "Lingua",
@@ -86,10 +90,11 @@ TRANSLATIONS = {
         "hero_subtitle": "Outil d'aide au diagnostic — Évaluation du risque de dépression",
         "step_counter": "Étape {current} sur {total}",
         "form_steps": [
-            {"title": "Informations du Patient",  "fields": ["gender", "age", "department"]},
+            {"title": "Informations du Patient",  "fields": ["name", "gender", "age", "department"]},
             {"title": "Parcours Académique",       "fields": ["cgpa", "study"]},
             {"title": "Mode de Vie du Patient",    "fields": ["sleep", "social", "physical", "stress"]},
         ],
+        "name_label":     "Nom du patient",
         "gender_label":   "Genre du patient",
         "gender_options": ["Homme", "Femme"],
         "age_label":      "Quel âge a le patient ?",
@@ -108,6 +113,7 @@ TRANSLATIONS = {
         "review_patient_info": "👤 Informations du Patient",
         "review_academic":     "📚 Parcours Académique",
         "review_lifestyle":    "💪 Mode de Vie",
+        "lbl_name":          "Nom :",
         "lbl_gender":        "Genre :",
         "lbl_age":           "Âge :",
         "lbl_age_unit":      "ans",
@@ -148,6 +154,8 @@ TRANSLATIONS = {
         "feedback_success":  "✅ Diagnostic enregistré (total: {total})",
         "feedback_retrain":  "🔄 Ré-entraînement du modèle déclenché !",
         "btn_new_patient":   "🔄 Nouveau Patient",
+        "btn_download_csv":  "📥 Télécharger CSV patients",
+        "csv_no_data":       "Aucun patient dans l'historique.",
         "footer_subtitle":   "Outil d'Aide au Diagnostic",
         "info_note": "<strong>ℹ️ Note :</strong> Cet outil d'aide au diagnostic repose sur un modèle de Machine Learning. Il ne se substitue pas au jugement clinique du praticien. Les données sont traitées localement.",
         "lang_picker_label": "Langue",
@@ -597,6 +605,8 @@ if "form_data" not in st.session_state:
     st.session_state.form_data = {}
 if "api_payload" not in st.session_state:
     st.session_state.api_payload = {}
+if "results_history" not in st.session_state:
+    st.session_state.results_history = []
 
 t          = TRANSLATIONS[st.session_state.lang]
 FORM_STEPS = t["form_steps"]
@@ -691,7 +701,14 @@ if st.session_state.step == "form":
         with st.form(f"step_form_{current_step_index}_{lang}", clear_on_submit=False):
             for field_key in current_step["fields"]:
                 wkey = f"{field_key}_{current_step_index}_{lang}"
-                if field_key == "gender":
+                if field_key == "name":
+                    st.session_state.form_data[field_key] = st.text_input(
+                        t["name_label"],
+                        value=st.session_state.form_data.get(field_key, ""),
+                        placeholder="ex: Mario Rossi",
+                        key=wkey,
+                    )
+                elif field_key == "gender":
                     opts = t["gender_options"]
                     stored = st.session_state.form_data.get(field_key, opts[0])
                     idx = opts.index(stored) if stored in opts else 0
@@ -768,6 +785,7 @@ if st.session_state.step == "form":
         st.markdown(f"""
         <div class="review-section">
             <h4>{t["review_patient_info"]}</h4>
+            <div class="review-item"><span>{t["lbl_name"]}</span> {fd.get("name", t["lbl_not_filled"])}</div>
             <div class="review-item"><span>{t["lbl_gender"]}</span> {fd.get("gender", t["lbl_not_filled"])}</div>
             <div class="review-item"><span>{t["lbl_age"]}</span> {fd.get("age", t["lbl_not_filled"])} {t["lbl_age_unit"]}</div>
             <div class="review-item"><span>{t["lbl_dept"]}</span> {fd.get("department", t["lbl_not_filled"])}</div>
@@ -807,10 +825,27 @@ if st.session_state.step == "form":
                     try:
                         response = requests.post(API_URL, json={"features": form_data_for_api}, timeout=10)
                         if response.status_code == 200:
+                            import datetime
                             prediction = response.json().get("prediction", 0)
                             st.session_state.prediction = prediction
                             st.session_state.api_payload = form_data_for_api
                             st.session_state.step = "result"
+                            cgpa_raw = st.session_state.form_data.get("cgpa")
+                            st.session_state.results_history.append({
+                                "Timestamp":           datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
+                                "Nom":                 st.session_state.form_data.get("name", ""),
+                                "Age":                 form_data_for_api.get("Age"),
+                                "Genre":               form_data_for_api.get("Gender"),
+                                "Département":         form_data_for_api.get("Department"),
+                                "Moyenne_20":          f"{cgpa_raw * 5:.1f}" if cgpa_raw else "",
+                                "Heures_étude_jour":   form_data_for_api.get("Study_Hours"),
+                                "Sommeil_nuit":        form_data_for_api.get("Sleep_Duration"),
+                                "Réseaux_sociaux_jour":form_data_for_api.get("Social_Media_Hours"),
+                                "Activité_physique":   form_data_for_api.get("Physical_Activity"),
+                                "Stress_1_10":         form_data_for_api.get("Stress_Level"),
+                                "Prédiction":          "Risque" if prediction == 1 else "Pas de risque",
+                                "Retour_clinique":     "",
+                            })
                             st.rerun()
                         else:
                             st.error(t["error_api"].format(status=response.status_code, text=response.text))
@@ -903,10 +938,16 @@ elif st.session_state.step == "result":
             submitted = st.form_submit_button(t["btn_send_feedback"], use_container_width=True)
 
     if submitted:
+        actual_int = 1 if actual_status == t["feedback_options"][1] else 0
+        # Mise à jour du retour clinique dans l'historique
+        if st.session_state.results_history:
+            st.session_state.results_history[-1]["Retour_clinique"] = (
+                "Oui" if actual_int == 1 else "Non"
+            )
         feedback_payload = {
             "features":   form_data,
             "prediction": int(prediction),
-            "actual":     1 if actual_status == t["feedback_options"][1] else 0,
+            "actual":     actual_int,
         }
         try:
             fb_response = requests.post(FEEDBACK_URL, json=feedback_payload, timeout=10)
@@ -921,13 +962,32 @@ elif st.session_state.step == "result":
             st.error(t["error_connection"].format(error=e))
 
     st.markdown('<div style="margin-top: 2rem;"></div>', unsafe_allow_html=True)
-    if st.button(t["btn_new_patient"], use_container_width=True):
-        st.session_state.step = "form"
-        st.session_state.form_step = 0
-        st.session_state.prediction = None
-        st.session_state.form_data = {}
-        st.session_state.api_payload = {}
-        st.rerun()
+
+    btn_col, csv_col = st.columns(2)
+    with btn_col:
+        if st.button(t["btn_new_patient"], use_container_width=True):
+            st.session_state.step = "form"
+            st.session_state.form_step = 0
+            st.session_state.prediction = None
+            st.session_state.form_data = {}
+            st.session_state.api_payload = {}
+            st.rerun()
+    with csv_col:
+        if st.session_state.results_history:
+            import io, csv as _csv
+            buf = io.StringIO()
+            writer = _csv.DictWriter(buf, fieldnames=st.session_state.results_history[0].keys())
+            writer.writeheader()
+            writer.writerows(st.session_state.results_history)
+            st.download_button(
+                label=t["btn_download_csv"],
+                data=buf.getvalue().encode("utf-8"),
+                file_name="neuromood_patients.csv",
+                mime="text/csv",
+                use_container_width=True,
+            )
+        else:
+            st.caption(t["csv_no_data"])
 
 # ---------------------------------------------------------------------------
 # Footer
