@@ -832,6 +832,10 @@ elif st.session_state.step == "result":
     form_data  = st.session_state.get("api_payload", st.session_state.form_data)
     is_at_risk = prediction == 1
 
+    import re
+    def _bold(s):
+        return re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', s)
+
     if is_at_risk:
         st.markdown(f"""
         <div class="result-card result-positive">
@@ -841,12 +845,19 @@ elif st.session_state.step == "result":
         </div>
         """, unsafe_allow_html=True)
 
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-        st.markdown(f'<div class="section-title">{t["prescriptions_title"]}</div>', unsafe_allow_html=True)
-        st.markdown(t["prescriptions_intro"])
-        for item in t["prescriptions"]:
-            st.markdown(f"- {item}")
-        st.markdown('</div>', unsafe_allow_html=True)
+        items_html = "".join(
+            f'<li style="margin-bottom:0.55rem;">{_bold(item)}</li>'
+            for item in t["prescriptions"]
+        )
+        st.markdown(f"""
+        <div class="glass-card">
+            <div class="section-title">{t["prescriptions_title"]}</div>
+            <p style="color:rgba(224,247,250,0.85);margin:1rem 0 0.6rem;">{t["prescriptions_intro"]}</p>
+            <ul style="color:#e0f7fa;line-height:1.85;padding-left:1.3rem;margin:0;">
+                {items_html}
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
     else:
         st.markdown(f"""
         <div class="result-card result-negative">
@@ -856,39 +867,58 @@ elif st.session_state.step == "result":
         </div>
         """, unsafe_allow_html=True)
 
-    # Feedback
-    st.markdown('<div class="feedback-box">', unsafe_allow_html=True)
-    st.markdown(f'<div class="feedback-title">{t["feedback_title"]}</div>', unsafe_allow_html=True)
-    st.markdown(t["feedback_desc"])
+    # CSS injecté uniquement sur la page résultat pour rendre le st.form comme une glass-card
+    st.markdown("""
+    <style>
+    section[data-testid="stForm"] {
+        background: rgba(255,255,255,0.08) !important;
+        backdrop-filter: blur(25px) !important;
+        -webkit-backdrop-filter: blur(25px) !important;
+        border-radius: 20px !important;
+        padding: 2.5rem !important;
+        border: 1px solid rgba(255,255,255,0.15) !important;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.2) !important;
+        margin-bottom: 2rem !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
-    feedback_col1, feedback_col2 = st.columns([3, 1])
-    with feedback_col1:
-        actual_status = st.selectbox(
-            t["feedback_question"],
-            t["feedback_options"],
-            key="feedback_actual"
-        )
-    with feedback_col2:
-        st.write("")
-        st.write("")
-        if st.button(t["btn_send_feedback"], use_container_width=True):
-            feedback_payload = {
-                "features":   form_data,
-                "prediction": int(prediction),
-                "actual":     1 if actual_status == t["feedback_options"][1] else 0,
-            }
-            try:
-                fb_response = requests.post(FEEDBACK_URL, json=feedback_payload, timeout=10)
-                if fb_response.status_code == 200:
-                    result = fb_response.json()
-                    st.success(t["feedback_success"].format(total=result.get("total_feedbacks", 0)))
-                    if result.get("retrain_triggered"):
-                        st.info(t["feedback_retrain"])
-                else:
-                    st.error(t["error_feedback"].format(status=fb_response.status_code))
-            except Exception as e:
-                st.error(t["error_connection"].format(error=e))
-    st.markdown('</div>', unsafe_allow_html=True)
+    # Feedback entièrement dans un st.form → tout dans le même bloc visuel
+    with st.form("feedback_form"):
+        st.markdown(f"""
+        <div class="section-title">{t["feedback_title"]}</div>
+        <p style="color:rgba(224,247,250,0.85);margin-top:0.8rem;margin-bottom:1.2rem;">{t["feedback_desc"]}</p>
+        """, unsafe_allow_html=True)
+
+        feedback_col1, feedback_col2 = st.columns([3, 1])
+        with feedback_col1:
+            actual_status = st.selectbox(
+                t["feedback_question"],
+                t["feedback_options"],
+                key="feedback_actual"
+            )
+        with feedback_col2:
+            st.write("")
+            st.write("")
+            submitted = st.form_submit_button(t["btn_send_feedback"], use_container_width=True)
+
+    if submitted:
+        feedback_payload = {
+            "features":   form_data,
+            "prediction": int(prediction),
+            "actual":     1 if actual_status == t["feedback_options"][1] else 0,
+        }
+        try:
+            fb_response = requests.post(FEEDBACK_URL, json=feedback_payload, timeout=10)
+            if fb_response.status_code == 200:
+                result = fb_response.json()
+                st.success(t["feedback_success"].format(total=result.get("total_feedbacks", 0)))
+                if result.get("retrain_triggered"):
+                    st.info(t["feedback_retrain"])
+            else:
+                st.error(t["error_feedback"].format(status=fb_response.status_code))
+        except Exception as e:
+            st.error(t["error_connection"].format(error=e))
 
     st.markdown('<div style="margin-top: 2rem;"></div>', unsafe_allow_html=True)
     if st.button(t["btn_new_patient"], use_container_width=True):
