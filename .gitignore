@@ -19,3 +19,5 @@ airflow/logs/
 
 # OS
 .DS_Store
+
+reports/*.html
