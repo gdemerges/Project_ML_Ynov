@@ -266,27 +266,28 @@ st.markdown("""
     }
     /* Dropdown list */
     [data-baseweb="popover"] ul {
-        background: #0f2027 !important;
-        border: 1px solid rgba(224,247,250,0.15) !important;
+        background: #e0f7fa !important;
+        border: 1px solid rgba(15,32,39,0.2) !important;
         border-radius: 12px !important;
     }
-    /* Items non-sélectionnés : bien visibles */
+    /* Items non-sélectionnés */
     [data-baseweb="popover"] li {
-        color: #e0f7fa !important;
+        color: #0f2027 !important;
         background: transparent !important;
     }
     [data-baseweb="popover"] li:hover {
-        background: rgba(77,208,225,0.12) !important;
-        color: #ffffff !important;
+        background: rgba(77,208,225,0.25) !important;
+        color: #0f2027 !important;
     }
-    /* Item sélectionné : discret, indicateur léger */
+    /* Item sélectionné */
     [data-baseweb="popover"] li[aria-selected="true"] {
-        background: rgba(77,208,225,0.08) !important;
-        color: rgba(224,247,250,0.5) !important;
+        background: rgba(77,208,225,0.35) !important;
+        color: #0f2027 !important;
+        font-weight: 600 !important;
     }
     [data-baseweb="popover"] li[aria-selected="true"]:hover {
-        background: rgba(77,208,225,0.14) !important;
-        color: rgba(224,247,250,0.7) !important;
+        background: rgba(77,208,225,0.45) !important;
+        color: #0f2027 !important;
     }
 
     /* --- Header --- */
@@ -357,10 +358,28 @@ st.markdown("""
     }
 
     /* --- ALL Form Inputs - universal fix --- */
-    .stNumberInput label, .stSelectbox label, .stSlider label {
+    .stNumberInput label, .stSelectbox label, .stSlider label, .stTextInput label {
         color: #e0f7fa !important;
         font-weight: 500 !important;
         font-size: 0.95rem !important;
+    }
+
+    .stTextInput > div > div {
+        background: rgba(255,255,255,0.1) !important;
+        border: 1px solid rgba(224,247,250,0.25) !important;
+        border-radius: 10px !important;
+        color: #ffffff !important;
+    }
+    .stTextInput > div > div:focus-within {
+        border-color: #4dd0e1 !important;
+        box-shadow: 0 0 0 2px rgba(77,208,225,0.2) !important;
+    }
+    .stTextInput input {
+        background: transparent !important;
+        border: none !important;
+        color: #ffffff !important;
+        font-weight: 500 !important;
+        caret-color: #4dd0e1 !important;
     }
 
     .stNumberInput input {
@@ -464,9 +483,9 @@ st.markdown("""
         font-weight: 500 !important;
     }
     /* Dropdown list */
-    [data-baseweb="popover"] ul { background: #0f2027 !important; border: 1px solid rgba(224,247,250,0.15) !important; border-radius: 12px !important; }
-    [data-baseweb="popover"] li { color: #e0f7fa !important; }
-    [data-baseweb="popover"] li:hover { background: rgba(77,208,225,0.12) !important; }
+    [data-baseweb="popover"] ul { background: #e0f7fa !important; border: 1px solid rgba(15,32,39,0.2) !important; border-radius: 12px !important; }
+    [data-baseweb="popover"] li { color: #0f2027 !important; }
+    [data-baseweb="popover"] li:hover { background: rgba(77,208,225,0.25) !important; color: #0f2027 !important; }
 
     /* --- Top bar: profile avatar --- */
     .profile-circle {
