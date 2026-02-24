@@ -9,6 +9,7 @@ RUN pip3 install --no-cache-dir --upgrade pip && \
 
 # Copy application code
 COPY app.py .
+COPY static/ static/
 
 # Run as non-root user
 RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app

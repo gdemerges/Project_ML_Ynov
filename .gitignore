@@ -21,3 +21,4 @@ airflow/logs/
 .DS_Store
 
 reports/*.html
+webapp/static/

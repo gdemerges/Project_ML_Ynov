@@ -378,6 +378,7 @@ st.markdown("""
         background: transparent !important;
         border: none !important;
         color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
         font-weight: 500 !important;
         caret-color: #4dd0e1 !important;
     }
@@ -596,13 +597,98 @@ st.markdown("""
     }
     section[data-testid="stForm"] { margin-top: 0 !important; padding-top: 0 !important; }
 
-    /* --- Popover (lang picker) --- */
-    [data-testid="stPopover"] > div {
-        background: rgba(15,32,39,0.97) !important;
-        border: 1px solid rgba(224,247,250,0.2) !important;
-        border-radius: 14px !important;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.5) !important;
+    /* --- Popover panel --- */
+    [data-testid="stPopover"] > div,
+    [data-baseweb="popover"] > div {
+        background: rgba(15,32,39,0.98) !important;
+        border: 1px solid rgba(77,208,225,0.15) !important;
+        border-radius: 16px !important;
+        box-shadow: 0 12px 40px rgba(0,0,0,0.5) !important;
+        backdrop-filter: blur(24px) !important;
+        -webkit-backdrop-filter: blur(24px) !important;
     }
+
+    /* --- Doctor profile pill (topbar) --- */
+    .trigger-pill {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 10px;
+        padding: 4px 0;
+        white-space: nowrap;
+    }
+    .trigger-avatar {
+        width: 38px; height: 38px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        overflow: hidden;
+        border: 2px solid rgba(77,208,225,0.45);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .trigger-avatar img, .trigger-avatar svg {
+        width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .trigger-name  { font-size: 0.82rem; font-weight: 600; color: #e0f7fa; line-height: 1.2; }
+    .trigger-role  { font-size: 0.68rem; color: rgba(224,247,250,0.4); line-height: 1.2; }
+
+    /* --- "⋮" popover trigger button --- */
+    [data-testid="stPopover"] > button {
+        width: 34px !important; height: 34px !important;
+        min-width: 34px !important; min-height: 34px !important;
+        border-radius: 9px !important;
+        background: rgba(255,255,255,0.05) !important;
+        border: 1px solid rgba(224,247,250,0.10) !important;
+        box-shadow: none !important;
+        color: rgba(224,247,250,0.45) !important;
+        font-size: 1.1rem !important;
+        padding: 0 !important;
+        transition: all 0.2s ease !important;
+    }
+    [data-testid="stPopover"] > button:hover {
+        background: rgba(77,208,225,0.09) !important;
+        border-color: rgba(77,208,225,0.3) !important;
+        color: #4dd0e1 !important;
+        transform: none !important; box-shadow: none !important;
+    }
+
+    /* --- Doctor card in popover --- */
+    .doctor-card {
+        display: flex; align-items: center; gap: 12px;
+        padding: 10px 14px; border-radius: 14px; margin-bottom: 4px;
+        border: 1.5px solid transparent;
+    }
+    .doctor-card-active  { background: rgba(77,208,225,0.09); border-color: rgba(77,208,225,0.32); }
+    .doctor-card-inactive { background: rgba(255,255,255,0.025); border-color: rgba(255,255,255,0.05); }
+    .doctor-avatar {
+        width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
+        overflow: hidden; border: 2px solid rgba(77,208,225,0.25);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .doctor-avatar img, .doctor-avatar svg { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .doctor-avatar-active { border-color: rgba(77,208,225,0.65); box-shadow: 0 2px 12px rgba(77,208,225,0.15); }
+    .doctor-info { flex: 1; min-width: 0; }
+    .doctor-name  { font-size: 0.9rem; font-weight: 600; color: #e0f7fa; line-height: 1.3; }
+    .doctor-name-active { color: #4dd0e1; }
+    .doctor-specialty { font-size: 0.73rem; color: rgba(224,247,250,0.45); line-height: 1.3; }
+    .doctor-badge {
+        font-size: 0.65rem; font-weight: 600; color: #4dd0e1;
+        background: rgba(77,208,225,0.10); padding: 3px 10px;
+        border-radius: 20px; letter-spacing: 0.02em; flex-shrink: 0;
+    }
+
+    /* --- Invisible click overlay on inactive doctor card --- */
+    .card-click-overlay {
+        position: relative; margin-top: -64px; margin-bottom: 10px; height: 60px; z-index: 10;
+    }
+    .card-click-overlay .stButton > button {
+        position: absolute !important; inset: 0 !important;
+        width: 100% !important; height: 100% !important;
+        opacity: 0 !important; cursor: pointer !important;
+        background: transparent !important; border: none !important;
+        box-shadow: none !important; padding: 0 !important;
+        min-height: unset !important; border-radius: 14px !important;
+    }
+
     .stRadio label { color: #e0f7fa !important; font-size: 1rem !important; }
     .stRadio [data-testid="stMarkdownContainer"] p { color: #e0f7fa !important; }
 
@@ -612,6 +698,8 @@ st.markdown("""
 # ---------------------------------------------------------------------------
 # Session state
 # ---------------------------------------------------------------------------
+if "doctor" not in st.session_state:
+    st.session_state.doctor = "mikaela"
 if "lang" not in st.session_state:
     st.session_state.lang = "it"
 if "step" not in st.session_state:
@@ -633,41 +721,115 @@ GENDER_MAP = GENDER_MAPS[st.session_state.lang]
 DEPT_MAP   = DEPT_MAPS[st.session_state.lang]
 
 # ---------------------------------------------------------------------------
-# Top bar : sélecteur de langue + photo de profil (alignés à droite)
+# Top bar : sélecteur de médecin (pill + popover)
 # ---------------------------------------------------------------------------
-LANG_OPTIONS = {"🇮🇹 Italiano": "it", "🇫🇷 Français": "fr"}
-LANG_LABELS   = list(LANG_OPTIONS.keys())
+import base64, pathlib
 
-_, lang_col, profile_col = st.columns([4.5, 2.2, 0.7])
+def _build_avatar(img_path: pathlib.Path, fallback_svg: str) -> str:
+    """Return <img> base64 or fallback SVG string."""
+    for ext in ("jpg", "jpeg", "png", "webp"):
+        p = img_path.with_suffix(f".{ext}")
+        if p.exists():
+            mime = "image/jpeg" if ext in ("jpg", "jpeg") else f"image/{ext}"
+            b64 = base64.b64encode(p.read_bytes()).decode()
+            return f'<img src="data:{mime};base64,{b64}" alt="avatar"/>'
+    return fallback_svg
 
-with lang_col:
-    st.markdown('<div class="lang-select">', unsafe_allow_html=True)
-    current_label = next(k for k, v in LANG_OPTIONS.items() if v == st.session_state.lang)
-    selected = st.selectbox(
-        "langue",
-        LANG_LABELS,
-        index=LANG_LABELS.index(current_label),
-        label_visibility="collapsed",
-        key="lang_select",
+_STATIC = pathlib.Path(__file__).parent / "static"
+_STATIC.mkdir(exist_ok=True)
+
+MIKAELA_AVATAR = _build_avatar(
+    _STATIC / "mikaela",
+    '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">'
+    '<defs><linearGradient id="gm" x1="0" y1="0" x2="0" y2="1">'
+    '<stop offset="0%" stop-color="#26c6da"/><stop offset="100%" stop-color="#00838f"/>'
+    '</linearGradient></defs>'
+    '<rect width="100" height="100" rx="50" fill="url(#gm)"/>'
+    '<ellipse cx="50" cy="42" rx="28" ry="30" fill="#8B4513"/>'
+    '<rect x="22" y="42" width="13" height="28" rx="6" fill="#8B4513"/>'
+    '<rect x="65" y="42" width="13" height="28" rx="6" fill="#8B4513"/>'
+    '<ellipse cx="50" cy="40" rx="21" ry="23" fill="#FDDCB5"/>'
+    '<ellipse cx="50" cy="24" rx="23" ry="10" fill="#8B4513"/>'
+    '<ellipse cx="41" cy="41" rx="3" ry="3.3" fill="#fff"/>'
+    '<ellipse cx="59" cy="41" rx="3" ry="3.3" fill="#fff"/>'
+    '<circle cx="41.5" cy="41.5" r="1.9" fill="#2E7D32"/>'
+    '<circle cx="59.5" cy="41.5" r="1.9" fill="#2E7D32"/>'
+    '<path d="M44 52 Q50 57 56 52" stroke="#C97C6B" stroke-width="1.3" fill="none" stroke-linecap="round"/>'
+    '<ellipse cx="50" cy="92" rx="30" ry="21" fill="#ffffff"/>'
+    '<path d="M41 77 Q39 84 43 87" stroke="#4dd0e1" stroke-width="2" fill="none" stroke-linecap="round"/>'
+    '<circle cx="43" cy="88" r="2.4" fill="#4dd0e1"/>'
+    '</svg>',
+)
+
+SOPHIE_AVATAR = (
+    '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">'
+    '<defs><linearGradient id="gs" x1="0" y1="0" x2="0" y2="1">'
+    '<stop offset="0%" stop-color="#455a64"/><stop offset="100%" stop-color="#263238"/>'
+    '</linearGradient></defs>'
+    '<rect width="100" height="100" rx="50" fill="url(#gs)"/>'
+    '<circle cx="50" cy="38" r="20" fill="rgba(255,255,255,0.18)"/>'
+    '<ellipse cx="50" cy="90" rx="28" ry="22" fill="rgba(255,255,255,0.18)"/>'
+    '<path d="M42 68 Q38 78 43 82" stroke="rgba(255,255,255,0.25)" stroke-width="2" fill="none" stroke-linecap="round"/>'
+    '<circle cx="43" cy="83" r="2.4" fill="rgba(255,255,255,0.25)"/>'
+    '<rect x="56" y="70" width="8" height="2.5" rx="1" fill="rgba(77,208,225,0.45)"/>'
+    '<rect x="59" y="67" width="2.5" height="8" rx="1" fill="rgba(77,208,225,0.45)"/>'
+    '</svg>'
+)
+
+DOCTORS = {
+    "mikaela": {"name": "Mikaela C.", "specialty": "Psychiatre · Napoli", "lang": "it", "flag": "🇮🇹", "avatar": MIKAELA_AVATAR},
+    "sophie":  {"name": "Sophie C.",  "specialty": "Psychiatre · Lyon",   "lang": "fr", "flag": "🇫🇷", "avatar": SOPHIE_AVATAR},
+}
+
+current_doc = DOCTORS[st.session_state.doctor]
+
+_, pill_col, popover_col = st.columns([4.2, 2.2, 0.6])
+
+with pill_col:
+    st.markdown(
+        f'<div class="trigger-pill">'
+        f'  <div class="trigger-avatar">{current_doc["avatar"]}</div>'
+        f'  <div>'
+        f'    <div class="trigger-name">{current_doc["name"]}</div>'
+        f'    <div class="trigger-role">{current_doc["specialty"]}</div>'
+        f'  </div>'
+        f'</div>',
+        unsafe_allow_html=True,
     )
-    new_lang = LANG_OPTIONS[selected]
-    if new_lang != st.session_state.lang:
-        st.session_state.lang = new_lang
-        st.session_state.form_data = {}
-        st.rerun()
-    st.markdown('</div>', unsafe_allow_html=True)
 
-with profile_col:
-    st.markdown("""
-    <div style="display:flex; justify-content:center; align-items:center; height:100%;">
-        <div class="profile-circle">
-            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="50" cy="36" r="22" fill="rgba(255,255,255,0.92)"/>
-                <ellipse cx="50" cy="94" rx="36" ry="26" fill="rgba(255,255,255,0.92)"/>
-            </svg>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+with popover_col:
+    with st.popover("⋮"):
+        st.markdown(
+            '<p style="color:rgba(224,247,250,0.45);font-size:0.7rem;margin:0 0 10px;'
+            'text-transform:uppercase;letter-spacing:0.1em;font-weight:600;'
+            'border-bottom:1px solid rgba(77,208,225,0.10);padding-bottom:8px;">Praticien</p>',
+            unsafe_allow_html=True,
+        )
+        for key, doc in DOCTORS.items():
+            is_active = key == st.session_state.doctor
+            card_cls   = "doctor-card-active"   if is_active else "doctor-card-inactive"
+            avatar_cls = "doctor-avatar-active" if is_active else ""
+            name_cls   = "doctor-name-active"   if is_active else ""
+            badge      = '<span class="doctor-badge">Actif</span>' if is_active else ""
+            st.markdown(
+                f'<div class="doctor-card {card_cls}">'
+                f'  <div class="doctor-avatar {avatar_cls}">{doc["avatar"]}</div>'
+                f'  <div class="doctor-info">'
+                f'    <div class="doctor-name {name_cls}">{doc["flag"]} {doc["name"]}</div>'
+                f'    <div class="doctor-specialty">{doc["specialty"]}</div>'
+                f'  </div>'
+                f'  {badge}'
+                f'</div>',
+                unsafe_allow_html=True,
+            )
+            if not is_active:
+                st.markdown('<div class="card-click-overlay">', unsafe_allow_html=True)
+                if st.button(" ", key=f"doc_{key}", use_container_width=True):
+                    st.session_state.doctor = key
+                    st.session_state.lang = doc["lang"]
+                    st.session_state.form_data = {}
+                    st.rerun()
+                st.markdown('</div>', unsafe_allow_html=True)
 
 # ---------------------------------------------------------------------------
 # Hero
