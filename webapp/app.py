@@ -364,22 +364,32 @@ st.markdown("""
         font-size: 0.95rem !important;
     }
 
-    .stTextInput > div > div {
-        background: rgba(255,255,255,0.1) !important;
+    .stTextInput > div > div,
+    .stTextInput [data-baseweb="input"],
+    .stTextInput [data-baseweb="base-input"] {
+        background: rgba(255,255,255,0.08) !important;
         border: 1px solid rgba(224,247,250,0.25) !important;
         border-radius: 10px !important;
-        color: #ffffff !important;
     }
-    .stTextInput > div > div:focus-within {
+    .stTextInput > div > div:focus-within,
+    .stTextInput [data-baseweb="input"]:focus-within {
         border-color: #4dd0e1 !important;
         box-shadow: 0 0 0 2px rgba(77,208,225,0.2) !important;
     }
-    .stTextInput input {
+    .stTextInput input,
+    .stTextInput [data-baseweb="base-input"] input {
         background: transparent !important;
         border: none !important;
-        color: #ffffff !important;
-        -webkit-text-fill-color: #ffffff !important;
+        color: #e0f7fa !important;
+        -webkit-text-fill-color: #e0f7fa !important;
         font-weight: 500 !important;
+        caret-color: #4dd0e1 !important;
+    }
+    .stTextInput input:-webkit-autofill,
+    .stTextInput input:-webkit-autofill:hover,
+    .stTextInput input:-webkit-autofill:focus {
+        -webkit-box-shadow: 0 0 0 1000px rgba(15,32,39,0.9) inset !important;
+        -webkit-text-fill-color: #e0f7fa !important;
         caret-color: #4dd0e1 !important;
     }
 
@@ -598,14 +608,22 @@ st.markdown("""
     section[data-testid="stForm"] { margin-top: 0 !important; padding-top: 0 !important; }
 
     /* --- Popover panel --- */
-    [data-testid="stPopover"] > div,
-    [data-baseweb="popover"] > div {
+    [data-baseweb="layer"] > div {
+        background: transparent !important;
+    }
+    [data-baseweb="popover"] {
         background: rgba(15,32,39,0.98) !important;
         border: 1px solid rgba(77,208,225,0.15) !important;
         border-radius: 16px !important;
         box-shadow: 0 12px 40px rgba(0,0,0,0.5) !important;
+        overflow: hidden !important;
         backdrop-filter: blur(24px) !important;
         -webkit-backdrop-filter: blur(24px) !important;
+    }
+    [data-baseweb="popover"] > div,
+    [data-baseweb="popover"] > div > div,
+    [data-baseweb="popover"] > div > div > div {
+        background: rgba(15,32,39,0.98) !important;
     }
 
     /* --- Doctor profile pill (topbar) --- */
@@ -676,17 +694,36 @@ st.markdown("""
         border-radius: 20px; letter-spacing: 0.02em; flex-shrink: 0;
     }
 
-    /* --- Invisible click overlay on inactive doctor card --- */
-    .card-click-overlay {
-        position: relative; margin-top: -64px; margin-bottom: 10px; height: 60px; z-index: 10;
+    /* --- Transparent Streamlit button overlaying inactive doctor card --- */
+    [data-baseweb="popover"] [data-testid="element-container"]:has(.doctor-card-inactive) + [data-testid="element-container"] {
+        margin-top: -68px !important;
+        height: 68px !important;
+        overflow: visible !important;
+        z-index: 10 !important;
+        position: relative !important;
     }
-    .card-click-overlay .stButton > button {
-        position: absolute !important; inset: 0 !important;
-        width: 100% !important; height: 100% !important;
-        opacity: 0 !important; cursor: pointer !important;
-        background: transparent !important; border: none !important;
-        box-shadow: none !important; padding: 0 !important;
-        min-height: unset !important; border-radius: 14px !important;
+    [data-baseweb="popover"] [data-testid="element-container"]:has(.doctor-card-inactive) + [data-testid="element-container"] .stButton {
+        height: 100% !important;
+        margin: 0 !important;
+        overflow: visible !important;
+    }
+    [data-baseweb="popover"] [data-testid="element-container"]:has(.doctor-card-inactive) + [data-testid="element-container"] .stButton > button {
+        width: 100% !important;
+        height: 100% !important;
+        opacity: 0 !important;
+        cursor: pointer !important;
+        min-height: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+    .doctor-card-inactive { cursor: pointer !important; }
+    /* Hover: highlight card when the overlay button is hovered */
+    [data-testid="element-container"]:has(.doctor-card-inactive):has(+ [data-testid="element-container"]:hover) .doctor-card-inactive,
+    .doctor-card-inactive:hover {
+        background: rgba(77,208,225,0.06) !important;
+        border-color: rgba(77,208,225,0.22) !important;
     }
 
     .stRadio label { color: #e0f7fa !important; font-size: 1rem !important; }
@@ -764,7 +801,7 @@ MIKAELA_AVATAR = _build_avatar(
 SOPHIE_AVATAR = (
     '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">'
     '<defs><linearGradient id="gs" x1="0" y1="0" x2="0" y2="1">'
-    '<stop offset="0%" stop-color="#455a64"/><stop offset="100%" stop-color="#263238"/>'
+    '<stop offset="0%" stop-color="#1a4a55"/><stop offset="100%" stop-color="#0d2830"/>'
     '</linearGradient></defs>'
     '<rect width="100" height="100" rx="50" fill="url(#gs)"/>'
     '<circle cx="50" cy="38" r="20" fill="rgba(255,255,255,0.18)"/>'
@@ -822,14 +859,13 @@ with popover_col:
                 f'</div>',
                 unsafe_allow_html=True,
             )
+            # Native Streamlit button overlaid on inactive card via CSS
             if not is_active:
-                st.markdown('<div class="card-click-overlay">', unsafe_allow_html=True)
                 if st.button(" ", key=f"doc_{key}", use_container_width=True):
                     st.session_state.doctor = key
                     st.session_state.lang = doc["lang"]
                     st.session_state.form_data = {}
                     st.rerun()
-                st.markdown('</div>', unsafe_allow_html=True)
 
 # ---------------------------------------------------------------------------
 # Hero
