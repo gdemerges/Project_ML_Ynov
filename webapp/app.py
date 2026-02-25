@@ -694,22 +694,22 @@ st.markdown("""
         border-radius: 20px; letter-spacing: 0.02em; flex-shrink: 0;
     }
 
-    /* --- Transparent Streamlit button overlaying inactive doctor card --- */
-    [data-baseweb="popover"] [data-testid="element-container"]:has(.doctor-card-inactive) + [data-testid="element-container"] {
-        margin-top: -68px !important;
-        height: 68px !important;
+    /* --- Doctor switch: invisible button overlaid on inactive card --- */
+    .doctor-card-inactive { cursor: pointer !important; }
+    [class*="st-key-doc_"] {
+        height: 0 !important;
         overflow: visible !important;
-        z-index: 10 !important;
-        position: relative !important;
-    }
-    [data-baseweb="popover"] [data-testid="element-container"]:has(.doctor-card-inactive) + [data-testid="element-container"] .stButton {
-        height: 100% !important;
         margin: 0 !important;
-        overflow: visible !important;
+        padding: 0 !important;
     }
-    [data-baseweb="popover"] [data-testid="element-container"]:has(.doctor-card-inactive) + [data-testid="element-container"] .stButton > button {
+    [class*="st-key-doc_"] .stButton {
+        margin: 0 !important;
+    }
+    [class*="st-key-doc_"] .stButton > button {
+        position: relative !important;
+        bottom: 75px !important;
+        height: 75px !important;
         width: 100% !important;
-        height: 100% !important;
         opacity: 0 !important;
         cursor: pointer !important;
         min-height: 0 !important;
@@ -717,13 +717,7 @@ st.markdown("""
         margin: 0 !important;
         border: none !important;
         box-shadow: none !important;
-    }
-    .doctor-card-inactive { cursor: pointer !important; }
-    /* Hover: highlight card when the overlay button is hovered */
-    [data-testid="element-container"]:has(.doctor-card-inactive):has(+ [data-testid="element-container"]:hover) .doctor-card-inactive,
-    .doctor-card-inactive:hover {
-        background: rgba(77,208,225,0.06) !important;
-        border-color: rgba(77,208,225,0.22) !important;
+        background: transparent !important;
     }
 
     .stRadio label { color: #e0f7fa !important; font-size: 1rem !important; }
@@ -798,24 +792,21 @@ MIKAELA_AVATAR = _build_avatar(
     '</svg>',
 )
 
-SOPHIE_AVATAR = (
+REBECCA_AVATAR = _build_avatar(
+    _STATIC / "rebecca",
     '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">'
-    '<defs><linearGradient id="gs" x1="0" y1="0" x2="0" y2="1">'
+    '<defs><linearGradient id="gr" x1="0" y1="0" x2="0" y2="1">'
     '<stop offset="0%" stop-color="#1a4a55"/><stop offset="100%" stop-color="#0d2830"/>'
     '</linearGradient></defs>'
-    '<rect width="100" height="100" rx="50" fill="url(#gs)"/>'
+    '<rect width="100" height="100" rx="50" fill="url(#gr)"/>'
     '<circle cx="50" cy="38" r="20" fill="rgba(255,255,255,0.18)"/>'
     '<ellipse cx="50" cy="90" rx="28" ry="22" fill="rgba(255,255,255,0.18)"/>'
-    '<path d="M42 68 Q38 78 43 82" stroke="rgba(255,255,255,0.25)" stroke-width="2" fill="none" stroke-linecap="round"/>'
-    '<circle cx="43" cy="83" r="2.4" fill="rgba(255,255,255,0.25)"/>'
-    '<rect x="56" y="70" width="8" height="2.5" rx="1" fill="rgba(77,208,225,0.45)"/>'
-    '<rect x="59" y="67" width="2.5" height="8" rx="1" fill="rgba(77,208,225,0.45)"/>'
     '</svg>'
 )
 
 DOCTORS = {
     "mikaela": {"name": "Mikaela C.", "specialty": "Psychiatre · Napoli", "lang": "it", "flag": "🇮🇹", "avatar": MIKAELA_AVATAR},
-    "sophie":  {"name": "Sophie C.",  "specialty": "Psychiatre · Lyon",   "lang": "fr", "flag": "🇫🇷", "avatar": SOPHIE_AVATAR},
+    "rebecca":  {"name": "Rebecca C.",  "specialty": "Psychiatre · Lyon",   "lang": "fr", "flag": "🇫🇷", "avatar": REBECCA_AVATAR},
 }
 
 current_doc = DOCTORS[st.session_state.doctor]
@@ -848,7 +839,7 @@ with popover_col:
             avatar_cls = "doctor-avatar-active" if is_active else ""
             name_cls   = "doctor-name-active"   if is_active else ""
             badge      = '<span class="doctor-badge">Actif</span>' if is_active else ""
-            st.markdown(
+            card_html = (
                 f'<div class="doctor-card {card_cls}">'
                 f'  <div class="doctor-avatar {avatar_cls}">{doc["avatar"]}</div>'
                 f'  <div class="doctor-info">'
@@ -856,16 +847,22 @@ with popover_col:
                 f'    <div class="doctor-specialty">{doc["specialty"]}</div>'
                 f'  </div>'
                 f'  {badge}'
-                f'</div>',
-                unsafe_allow_html=True,
+                f'</div>'
             )
-            # Native Streamlit button overlaid on inactive card via CSS
-            if not is_active:
-                if st.button(" ", key=f"doc_{key}", use_container_width=True):
-                    st.session_state.doctor = key
-                    st.session_state.lang = doc["lang"]
+            if is_active:
+                st.markdown(card_html, unsafe_allow_html=True)
+            else:
+                def _switch(k=key, l=doc["lang"]):
+                    st.session_state.doctor = k
+                    st.session_state.lang = l
                     st.session_state.form_data = {}
-                    st.rerun()
+                st.markdown(card_html, unsafe_allow_html=True)
+                st.button(
+                    f"Sélectionner {doc['name']}",
+                    key=f"doc_{key}",
+                    on_click=_switch,
+                    use_container_width=True,
+                )
 
 # ---------------------------------------------------------------------------
 # Hero
