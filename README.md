@@ -372,6 +372,7 @@ En cas de détresse psychologique :
 
 ## 👥 Équipe & Contexte
 
+- **Membres** : Mama Assaïta Sakho, Parvin Sultana, Gabriel Faucon, Guillaume Demergès
 - **Cours** : Concepts, fonctionnements et technologies de l'IA
 - **Enseignant** : Haytham Elghazel
 - **Formation** : M1 DataEng - Ynov Campus
